@@ -1,11 +1,7 @@
 <?php
 //error_reporting(0); //zhl: 异常处理？
-$hostname_tankdb = "localhost";    //database host 
-$database_tankdb = "tankdb";       //database name
-$username_tankdb = "root";         //mysql user name
-$password_tankdb = "";             //mysql password
-$tankdb = mysql_connect($hostname_tankdb, $username_tankdb, $password_tankdb) or trigger_error(mysql_error(),E_USER_ERROR);
-mysql_query("set names 'utf8'");
+//error_reporting(E_ALL ^ E_NOTICE);
+require_once 'db_config.php';
 
 require "function.class.php";
 

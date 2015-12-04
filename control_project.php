@@ -41,6 +41,9 @@ if (isset($_GET['project_type']))
         }
 
     }
+}else {
+	$project_type_arr=Array();
+	
 }
 
 //表单中“按名称查询”的处理：输入框通过get方法传递过来的数据
