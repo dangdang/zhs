@@ -1,0 +1,1501 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"click",
+				"clickTime〔variable〕"
+			],
+			[
+				"default",
+				"defaultDay〔variable〕"
+			],
+			[
+				"form",
+				"format"
+			],
+			[
+				"tex",
+				"text-align: 〔property〕"
+			],
+			[
+				"c",
+				"center"
+			],
+			[
+				"bs3-l",
+				"bs3-label	bs3-label"
+			],
+			[
+				"h",
+				"header"
+			],
+			[
+				"log",
+				"logStartTime"
+			],
+			[
+				"o",
+				"onclick	Attr"
+			],
+			[
+				"bs3b",
+				"bs3-button	bs3-button"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"di",
+				"display: 〔property〕"
+			],
+			[
+				"if",
+				"ifframe"
+			],
+			[
+				"tie",
+				"title"
+			],
+			[
+				"td",
+				"td	Tag"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "<?php require_once('config/tank_config.php'); ?><!--连接数据库、包含预定义函数、取相关配载参数-->\n<?php require_once('session_unset.php'); ?><!--登陆前清空所有session信息-->\n<?php require_once('session.php'); ?>\n<?php\n$url_this = $_SERVER[\"QUERY_STRING\"] ;\n\n$current_url = current(explode(\"&sort\",$url_this));\n\n//获取tk_project_type数据库设定好的值\nmysql_select_db($database_tankdb, $tankdb);\n$query_RS_projet_type = \"SELECT * FROM tk_project_type ORDER BY project_type_backup1 ASC\";\n$Recordset_project_type = mysql_query($query_RS_projet_type, $tankdb) or die(mysql_error());\n$row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type);\n$totalRows_Recordset_project_type = mysql_num_rows($Recordset_project_type);\n\n?>\n\n<?php require('head.php'); ?>\n\n<link href='fullcalendar/fullcalendar.css' rel='stylesheet' />\n<link href='fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />\n<script src='fullcalendar/lib/moment.min.js'></script>\n<!-- <script src='fullcalendar/lib/jquery.min.js'></script> <!V1.11.3 ,统一放在head.php来引用jquery -->\n<script src='fullcalendar/fullcalendar.min.js'></script>\n<script src='fullcalendar/lang/zh-cn.js'></script>\n<link rel=\"stylesheet\" href=\"fullcalendar/fullcalendar.css\"/>\n\n\n<!-- <link rel=\"stylesheet\" href=\"bootstrap/css/datepicker3.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap-datepicker.js\"></script>\n<script type=\"text/javascript\" src=\"bootstrap/js/locales/bootstrap-datepicker.zh-CN.js\"></script> -->\n\n<link rel=\"stylesheet\" href=\"bootstrap/css/bootstrap-datetimepicker.min.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap-datetimepicker.min.js\"></script>\n<script type=\"text/javascript\" src=\"bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js\"></script>\n\n<link rel=\"stylesheet\" href=\"bootstrap/css/bootstrap-timepicker.min.css\" type=\"text/css\"/>\n<script type=\"text/javascript\" src=\"bootstrap/js/bootstrap-timepicker.min.js\" ></script>\n\n<link href=\"skin/themes/base/jquery-ui.min.css\" rel=\"stylesheet\" type=\"text/css\" />\n<script type=\"text/javascript\" src=\"srcipt/jquery-ui-1.10.4.min.js\"></script>\n\n<!-- 工时滑动条 -->\n<!--  <script>\n//  $(function() {\n//    var select = $( \"#csa_tb_manhour\" );\n//    var slider = $( \"<div id='slider' class='pull-left' style='width:442px; margin:5px;'></div>\" ).insertAfter( select ).slider({\n//      min: 0,\n//      max: 49,\n//      range: \"min\",\n//      value: select[ 0 ].selectedIndex + 0.5,\n//      slide: function( event, ui ) {\n//        select[ 0 ].selectedIndex = ui.value - 0.5;\n//      }\n//    });\n//    $( \"#csa_tb_manhour\" ).change(function() {\n//      slider.slider( \"value\", this.selectedIndex + 0.5 );\n//    });\n//  });\n</script> -->\n\n\n<script>\n\n  $(document).ready(function(){\n\n    $('#startDatetimepicker')\n      .datetimepicker({\n          \n          autoclose:true,\n          // todayBtn:true,\n          startView:'day',\n          weekStart:1,\n          startDate:'2010-01-01',\n          endDate:'+1d',\n          // todayHighlight:true,\n          minuteStep:30,\n          language:'zh-CN'\n          // showMeridian:true, //加分割线\n      })\n      .on('changeDate', function(ev){\n        // if (ev.date.valueOf() < date-start-display.valueOf()){  ....}\n         // alert($(this).val());\n         $('#endDatetimepicker').val($(this).val());\n         $('#endDatetimepicker').datetimepicker('setStartDate',$(this).val());\n       });\n      \n    $('#endDatetimepicker').datetimepicker({\n              autoclose:true,\n        // todayBtn:true,\n        startView:'day',\n        weekStart:1,\n        startDate:'2010-01-01',\n        endDate:'+1d',//比当前时间晚1天\n        // todayHighlight:true,\n        minuteStep:30,\n        language:'zh-CN'\n      });\n        // showMeridian:true, //加分割线);\n    // $('#logStartTime').timepicker();\n\n    $('#calendar').fullCalendar({\n          header: {\n            left: 'prev,next today',\n            center: 'title',\n            right: 'month,agendaWeek,agendaDay'\n          },\n          defaultDate: '2015-02-12',\n          editable: true,\n          eventLimit: true, // allow \"more\" link when too many events\n          dayClick: function(date, jsEvent, view) {\n             // J.dialog.get({ id: 'test', title: '填写日志', page: 'log_add_J.php' });\n             // alert('Clicked on: ' + date.format());\n            // var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');//格式化日期\n          \n            var clickDateTime=date.format(\"YYYY-MM-DD H:ss\");\n             $('#startDatetimepicker').val(clickDateTime);\n             $('#endDatetimepicker').val(clickDateTime);\n\n             $('#logAddModal').modal();\n            //调用fancybox弹出层\n             // $.fancybox({\n             //    type:'iframe',\n             //    title:'填写日志',\n             //    href:'log_add_fancy.php',\n             //    modal:'true',//填写日志的窗口没关闭之前不能转换焦点\n             //    scrolling : 'auto',\n             //    preload   : true,\n             //    maxWidth : 400,\n             //    maxHeight : 300,\n             //    width   : '40%',\n             //    height    : '40%',\n             //    autoSize  : false,\n             //    closeClick  : false,\n             //    autoResize:true,\n             //    autoCenter:true\n             // });\n           },\n          events: [\n            {\n              title: 'All Day Event',\n              start: '2015-02-01'\n            },\n            {\n              title: 'Long Event',\n              start: '2015-02-07',\n              end: '2015-02-10'\n            },\n            {\n              id: 999,\n              title: 'Repeating Event',\n              start: '2015-02-09T16:00:00'\n            },\n            {\n              id: 999,\n              title: 'Repeating Event',\n              start: '2015-02-16T16:00:00'\n            },\n            {\n              title: 'Conference',\n              start: '2015-02-11',\n              end: '2015-02-13'\n            },\n            {\n              title: 'Meeting',\n              start: '2015-02-12T10:30:00',\n              end: '2015-02-12T12:30:00'\n            },\n            {\n              title: 'Lunch',\n              start: '2015-02-12T12:00:00'\n            },\n            {\n              title: 'Meeting',\n              start: '2015-02-12T14:30:00'\n            },\n            {\n              title: 'Happy Hour',\n              start: '2015-02-12T17:30:00'\n            },\n            {\n              title: 'Dinner',\n              start: '2015-02-12T20:00:00'\n            },\n            {\n              title: 'Birthday Party',\n              start: '2015-02-13T07:00:00'\n            },\n            {\n              title: 'Click for Google',\n              url: 'http://google.com/',\n              start: '2015-02-28'\n            }\n          ]\n        });\n\n});\n\n\n</script>\n\n\n\n<div class=\"subnav\">\n  <div id='calendar' style=\" max-width: 900px;margin: 0 auto;font-size: 14px;\"></div>\n\n</div><!--subnav -->\n<!-- <button type=\"button\" class=\"btn btn-default\" onclick=\"$('#logAddModal').modal();\">button</button> -->\n\n<!-- 弹出模式对话框内容（隐藏） -->\n<div class=\"modal\" id=\"logAddModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"logAddModalLabel\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n        <h4 class=\"modal-title\" id=\"logAddModalLabel\"><strong>填写项目日志</strong></h4>\n      </div>\n      <div class=\"modal-body\">\n        <form>\n          <!--选择日志填写时间-->\n                 <!--用户当前选择的日期  -->\n<!--             <div class=\"form-group \">\n               <h3 class=\"text-center\"><?php echo date('Y-m-d'); ?></h3>\n             </div>  -->\n\n          <!-- 开始时间 -->\n              <div class=\"form-group \">\n                <label for=\"startDatetimepicker\">开始时间<!-- <span id=\"datepicker_msg\"></span> --></label>\n                <div>\n                  <input type=\"text\" name=\"start_datetime\" id=\"startDatetimepicker\" value=\"<?php echo date('Y-m-d'); ?>\" class=\"form-control\"  readonly>\n                  </div>\n             </div>\n         \n           <!--结束时间 -->\n              <div class=\"form-group \">\n                <label for=\"endDatetimepicker\">结束时间<!-- <span id=\"datepicker_msg\"></span> --></label>\n                <div>\n                  <input type=\"text\" name=\"send_datetime\" id=\"endDatetimepicker\" value=\"<?php echo date('Y-m-d'); ?>\" class=\"form-control\"  readonly>\n                  </div>\n             </div>\n          \n \n\n            <!-- timepiciker控件，选择开始时间 -->\n<!--             <label for=\"logStartTime\">工作开始时刻<span id=\"datepicker_msg\"></span></label> \n            <div class=\"form-group col-xs-5 input-group bootstrap-timepicker timepicker\">\n              <span style=\"position: relative; z-index: 9999;\">\n                <input id=\"logStartTime\" type=\"text\" class=\"form-control input-small\" readonly></span>\n              <span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-time\"></i></span> -->\n\n          <!-- 时间滑块，来自jquery ui的控件 -->\n          <!-- <div class=\"form-group \">\n              <label for=\"csa_tb_manhour\" class=\"pull-left\">所用工时</label>\n              <div class=\"pull-right\">    \n                <select name=\"csa_tb_manhour\" id=\"csa_tb_manhour\">\n                              <option value=\"0\" selected=\"selected\">0</option>\n                              <option value=\"0.5\">0.5</option>\n                              <option value=\"1\">1</option>\n                              <option value=\"1.5\">1.5</option>\n                              <option value=\"2\">2</option>\n                              <option value=\"2.5\">2.5</option>\n                              <option value=\"3\">3</option>\n                              <option value=\"3.5\">3.5</option>\n                              <option value=\"4\">4</option>\n                              <option value=\"4.5\">4.5</option>\n                              <option value=\"5\">5</option>\n                              <option value=\"5.5\">5.5</option>\n                              <option value=\"6\">6</option>\n                              <option value=\"6.5\">6.5</option>\n                              <option value=\"7\">7</option>\n                              <option value=\"7.5\">7.5</option>\n                              <option value=\"8\">8</option>\n                              <option value=\"8.5\">8.5</option>\n                              <option value=\"9\">9</option>\n                              <option value=\"9.5\">9.5</option>\n                              <option value=\"10\">10</option>\n                              <option value=\"10.5\">10.5</option>\n                              <option value=\"11\">11</option>\n                              <option value=\"11.5\">11.5</option>\n                              <option value=\"12\">12</option>\n                              <option value=\"12.5\">12.5</option>\n                              <option value=\"13\">13</option>\n                              <option value=\"13.5\">13.5</option>\n                              <option value=\"14\">14</option>\n                              <option value=\"14.5\">14.5</option>\n                              <option value=\"15\">15</option>\n                              <option value=\"15.5\">15.5</option>\n                              <option value=\"16\">16</option>\n                              <option value=\"16.5\">16.5</option>\n                              <option value=\"17\">17</option>\n                              <option value=\"17.5\">17.5</option>\n                              <option value=\"18\">18</option>\n                              <option value=\"18.5\">18.5</option>\n                              <option value=\"19\">19</option>\n                              <option value=\"19.5\">19.5</option>\n                              <option value=\"20\">20</option>\n                              <option value=\"20.5\">20.5</option>\n                              <option value=\"21\">21</option>\n                              <option value=\"21.5\">21.5</option>\n                              <option value=\"22\">22</option>\n                              <option value=\"22.5\">22.5</option>\n                              <option value=\"23\">23</option>\n                              <option value=\"23.5\">23.5</option>\n                              <option value=\"24\">24</option>\n                    </select>\n                 </div>\n            </div> -->\n            \n            \n     \n          <!--zhl:该用户参与的项目（或分为两类：负责的、参与的），用下拉列表框实现-->\n             <div class=\"form-group  \">\n                <label for=\"project_type\" >项目名称</label>\n                <div >\n                   <select id=\"project_type\" name=\"project_type\" onChange=\"option_gourl(this.value)\"  class=\"form-control\">\n                        <?php do { ?>\n                              <option value=\"<?php echo $row_Recordset_project_type['ptid']?>\"><?php echo $row_Recordset_project_type['project_type_name']?></option>\n                          <?php\n                          } while ($row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type));\n                          $rows = mysql_num_rows($Recordset_project_type);\n                          if($rows > 0) {\n                              mysql_data_seek($Recordset_project_type, 0);\n                              $row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type);\n                          } ?>\n                          <?php if ($_SESSION['MM_rank'] > \"4\") { ?>\n                              <option value=\"-2\" class=\"gray\" >+<?php echo $multilingual_projecttype_new; ?></option>\n                          <?php } ?>\n                   </select>\n                </div>\n             </div>\n\n \n\n          <div class=\"form-group \">\n            <label for=\"message-text\" class=\"control-label\">备注</label>\n            <textarea class=\"form-control\" id=\"message-text\" placeholder=\"描述工作内容\"></textarea>\n          </div>\n        </form>\n\n      </div>\n      <div class=\"modal-footer  \">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">取消</button>\n        <button type=\"button\" class=\"btn btn-primary\">提交</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n\n\n  <?php require('foot.php'); ?>\n\n\n</body>\n</html>",
+			"file": "worklog.php",
+			"file_size": 15013,
+			"file_write_time": 130923938153784849,
+			"settings":
+			{
+				"buffer_size": 14189,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "user_view.php",
+			"settings":
+			{
+				"buffer_size": 37154,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/wamp/www/zhl.php",
+			"settings":
+			{
+				"buffer_size": 140,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "天津\n\n\n\n河北\n\n\n\n\n福建\n\n广东\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n海南省\n广西\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n重庆\n\n\n湖南\n\n\n\n湖北\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n江西\n\n\n安徽\n\n\n山东\n\n\n\n\n\n\n\n\n\n\n\n\n\n辽宁\n\n\n\n江苏\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n浙江\n\n\n上海\n\n\n",
+			"file": "/C/Users/SuperLin/Desktop/集疏港铁路上报各省名单.txt",
+			"file_size": 0,
+			"file_write_time": 130935164992585314,
+			"settings":
+			{
+				"buffer_size": 174,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nMarkdownEditing\n---------------\n\n  # MarkdownEditing 2.1.4 Changelog\n  \n  Your _MarkdownEditing_ plugin is updated. Enjoy new version. For any type of\n  feedback you can use [GitHub issues][issues].\n  \n  ## Bug Fixes\n  \n  * Various small bug fixes.\n  \n  ## New Features\n  \n  * Automatized syntax highlighting tests (a new feature of ST).\n  * \"Swift\" and \"scheme\" language support for fenced code blocks.\n  * More liberal fenced code block matching, with unknown language header.\n  \n  [issues]: https://github.com/SublimeText-Markdown/MarkdownEditing/issues\n",
+			"settings":
+			{
+				"buffer_size": 608,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"file": "bootstrap/js/bootstrap-datetimepicker.js",
+			"settings":
+			{
+				"buffer_size": 65605,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bootstrap/css/bootstrap-datetimepicker.min.css",
+			"settings":
+			{
+				"buffer_size": 12611,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js",
+			"settings":
+			{
+				"buffer_size": 601,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "head.php",
+			"settings":
+			{
+				"buffer_size": 8482,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "log_add.php",
+			"settings":
+			{
+				"buffer_size": 13412,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "log_add_J.php",
+			"settings":
+			{
+				"buffer_size": 13993,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 219.0,
+		"last_filter": "Package Control: li",
+		"selected_items":
+		[
+			[
+				"Package Control: li",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"todo",
+				"TodoReview: Project and Open Files"
+			],
+			[
+				"tod",
+				"TodoReview: Project Files"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"m",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 528.0
+	},
+	"console":
+	{
+		"height": 272.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/wamp/www/zhs",
+		"/C/wamp/www/zhs/bootstrap",
+		"/C/wamp/www/zhs/bootstrap/css",
+		"/C/wamp/www/zhs/bootstrap/js",
+		"/C/wamp/www/zhs/srcipt"
+	],
+	"file_history":
+	[
+		"/C/wamp/www/EasyWork/Install/mysql.php",
+		"/D/Develope/WSS/他山之石/EasyWork_1.0.9_full/EasyWork/readme.txt",
+		"/C/wamp/www/EasyWork/index.php",
+		"/C/wamp/www/zhs/default_task_edit.php",
+		"/C/wamp/www/zhs/log_add_fancy.php",
+		"/C/wamp/www/zhs/log_add_J.php",
+		"/C/wamp/www/zhs/log_add.php",
+		"/C/wamp/www/zhs/log_add_backup.php",
+		"/C/wamp/www/zhs/bootstrap/js/bootstrap.js",
+		"/C/wamp/www/zhs/worklog_test.php",
+		"/C/wamp/www/zhs/logAdd_test_new.php",
+		"/C/wamp/www/datetimepicker/sample in bootstrap v3/ZHL_TEST.PHP",
+		"/C/wamp/www/zhs/control_project.php",
+		"/C/wamp/www/zhs/bootstrap/css/bootstrap.css",
+		"/D/Develope/WSS/DataBackup/zhs_V0.5_20151112_实现了fancybox弹出对话框/head.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/HTML-CSS-JS Prettify/HTMLPrettify.sublime-settings",
+		"/C/wamp/www/zhs/bootstrap/css/bootstrap-datetimepicker.min.css",
+		"/D/Develope/WSS/DataBackup/zhs_V0.5_20151112_实现了fancybox弹出对话框/worklog.php",
+		"/C/wamp/www/datetimepicker/sample in bootstrap v3/index1.html",
+		"/C/wamp/www/zhs/project_add.php",
+		"/C/wamp/www/zhs/bootstrap/js/bootstrap-datetimepicker.min.js",
+		"/C/wamp/www/datetimepicker/sample in bootstrap v3/bootstrap/js/bootstrap.min.js",
+		"/C/wamp/www/zhs/project_type_list.php",
+		"/C/wamp/www/zhs/project_edit.php",
+		"/C/wamp/www/zhs/project.php",
+		"/C/wamp/www/sample in bootstrap v3/index.html",
+		"/C/wamp/www/zhs/head.php",
+		"/E/Software/IPMSG/Feige_for_Windows/飞鸽传书简介.txt",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/TodoReview.sublime-settings",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/TodoReview/TodoReview.sublime-settings",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/wamp/www/zhs/default_task_calendar.php",
+		"/D/Develope/WSS/PhpStorm/注册码V7V8.txt",
+		"/D/Develope/WSS/PhpStorm/phpstorm V10 注册方法.txt",
+		"/C/wamp/www/zhs_local1/log_add_test_bt.php",
+		"/C/wamp/www/zhs/log_add_test_bt.php",
+		"/C/wamp/www/zhs/log_add_test.php",
+		"/C/Users/SuperLin/Desktop/小杏仁儿和爸爸.txt",
+		"/C/wamp/www/zhs/srcipt/dialog-plus-min.js",
+		"/C/wamp/www/zhs/srcipt/lhgdialog.js",
+		"/D/Develope/WSS/UI/ArtDialog/aui-artDialog-6.0.4-3-g9fd667e/aui-artDialog-9fd667e/src/dialog-config.js",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/SuperLin/Desktop/1111.html",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/Preferences.sublime-settings",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/SublimeLinter.sublime-settings",
+		"/D/Develope/WSS/PhpStorm/Theme/phpstorm-monokai-master/readme.md",
+		"/C/wamp/www/zhs/fullcalendar/lib/jquery.min.js",
+		"/C/wamp/www/zhs/srcipt/jquery.js",
+		"/D/Develope/WSS/UI/fancyapps-fancyBox-v2.1.5-0-ge2248f4/fancyapps-fancyBox-18d1712/README.md",
+		"/C/wamp/www/zhs/zhs_zhl.sublime-project",
+		"/C/wamp/www/xdebug_test.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/Xdebug.sublime-settings",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/Xdebug Client/Xdebug.sublime-settings",
+		"/C/Users/SuperLin/Desktop/xdebug_test.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/C/wamp/www/zhs/default_project.php",
+		"/C/wamp/www/zhs/control_log.php",
+		"/C/wamp/www/zhs/control_file.php",
+		"/C/Users/SuperLin/Desktop/1111.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/php.sublime-build",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/123",
+		"/C/Users/SuperLin/Desktop/12334.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/11111.pho",
+		"/C/Users/SuperLin/Desktop/1234",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Packages/User/11.php",
+		"/C/Users/SuperLin/Desktop/1.php",
+		"/D/Develope/WSS/Tools/Sublime Text Build 3083/Data/Installed Packages/Package Control.sublime-package"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 105.0,
+		"where_history":
+		[
+			"<project>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"changedate",
+			"datechange",
+			"iconType",
+			"switch",
+			"slider",
+			"place",
+			"z-index",
+			"datepicker",
+			"date",
+			"content",
+			"font",
+			"onclick",
+			"auto",
+			"url"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "worklog.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14189,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13940,
+								13940
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "0dd8740a",
+							"origin_encoding": "UTF-8",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7597.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "user_view.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 37154,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "25fa800d",
+							"origin_encoding": "UTF-8",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/wamp/www/zhl.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 140,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								122,
+								122
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "b41abf12",
+							"open_with_edit": true,
+							"origin_encoding": "ASCII",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/SuperLin/Desktop/集疏港铁路上报各省名单.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 174,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								173,
+								173
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"bs_sintax": "plain text",
+							"buffer_scroll_name": "633dddea",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2482.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 608,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								608,
+								608
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_indent": false,
+							"bs_sintax": "plain text",
+							"default_dir": "C:\\wamp\\www\\zhs",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "bootstrap/js/bootstrap-datetimepicker.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 65605,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								40636,
+								40646
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"bs_sintax": "javascript",
+							"buffer_scroll_name": "083408fc",
+							"spell_check": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 24429.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "bootstrap/css/bootstrap-datetimepicker.min.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12611,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								197,
+								197
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"bs_sintax": "css",
+							"buffer_scroll_name": "bdaf09e1",
+							"spell_check": false,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3243.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 601,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								151,
+								156
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"bs_sintax": "javascript",
+							"buffer_scroll_name": "3553a5a6",
+							"origin_encoding": "UTF-8",
+							"spell_check": false,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "head.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								830,
+								830
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "b799f617",
+							"origin_encoding": "UTF-8",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "log_add.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13412,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11559,
+								11553
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
+							[
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "f27dd61c",
+							"origin_encoding": "ASCII",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6693.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "log_add_J.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13993,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8155,
+								8155
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"bs_sintax": "php",
+							"buffer_scroll_name": "9181ef62",
+							"origin_encoding": "ASCII",
+							"spell_check": false,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7314.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 148.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 148.0
+	},
+	"pinned_build_system": "Packages/User/php.sublime-build",
+	"project": "zhs_zhl.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"head",
+				"head.php"
+			],
+			[
+				"boostrap.js",
+				"bootstrap\\js\\bootstrap-datetimepicker.min.js"
+			],
+			[
+				"proad",
+				"project_add.php"
+			],
+			[
+				"lhd",
+				"srcipt\\lhgdialog.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"17":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"18":
+				{
+					"group": 0,
+					"index": 1
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						2,
+						1
+					],
+					[
+						0,
+						1,
+						1,
+						2
+					],
+					[
+						1,
+						1,
+						2,
+						2
+					]
+				],
+				"cols":
+				[
+					0.0,
+					0.5,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					0.441530740276,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 371.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

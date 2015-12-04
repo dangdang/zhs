@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+/*综合所系统定制css，20150324由superlin创建*/
+
+/*
+html { overflow: scroll; }*/
+/*td{"white-space: nowrap"}*/
+@media (min-width: 1028px) {
+    .table-zhl {
+        /*width: 100%;*/
+       /*margin-bottom: 15px;*/
+        overflow-x: scroll;
+        overflow-y: hidden;
+       /* border: 1px solid #dddddd;*/
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        -webkit-overflow-scrolling: touch;
+    }
+
+   /* .table-zhl > .table {
+        margin-bottom: 0;
+    }*/
+
+    .table-zhl > .table > thead > tr > th,
+    .table-zhl > .table > tbody > tr > th,
+    .table-zhl > .table > tfoot > tr > th,
+    .table-zhl > .table > thead > tr > td,
+    .table-zhl > .table > tbody > tr > td,
+    .table-zhl > .table > tfoot > tr > td {
+        white-space: nowrap;
+    }
+}
