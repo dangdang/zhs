@@ -810,7 +810,7 @@ case 1:
         </tr>
 <!--            工作日志的日历图-->
         <tr>
-          <td><span class="font_big18 fontbold"><?php echo $multilingual_default_task_section5; ?></span></td>
+          <td><span class="font_big18 fontbold"><?php echo $multilingual_default_task_section5; ?></span><a name="bbbbb"></a></td>
         </tr>
         <tr>
           <td><iframe id="frame_content" name="main_frame" frameborder="0" height="" width="100%" src="default_task_calendar.php?taskid=<?php echo $row_Recordset_task['TID']; ?>&userid=<?php echo $row_Recordset_task['csa_to_user']; ?>&projectid=<?php echo $row_Recordset_task['csa_project']; ?>&tasktype=<?php echo $row_Recordset_task['csa_type']; ?>" onLoad="TuneHeight()" scrolling="no"></iframe></td>
@@ -835,7 +835,7 @@ case 1:
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<a name="ccccc"></a>
 
 </body>
 </html>

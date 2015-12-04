@@ -79,7 +79,7 @@ if ((isset ( $_POST ["log_insert"] )) && ($_POST ["log_insert"] == "form1")) {
 	$insertGoTo = "log_finish.php";
 	if (isset ( $_SERVER ['QUERY_STRING'] )) {
 		$insertGoTo .= (strpos ( $insertGoTo, '?' )) ? "&" : "?";
-		$insertGoTo .= $_SERVER ['QUERY_STRING'];
+		$insertGoTo .= $_SERVER ['QUERY_STRING']."&taskid=".$_POST ['csa_tb_backup1'];
 	}
 	
 	$msg_to = $mailto;
@@ -138,6 +138,15 @@ function over()
 
 function submitform()
 {
+	if($("#csa_tb_backup3").val()==0){
+		$("#project_id").css("border-color","red");
+		return false;
+	}
+	
+	if($("#csa_tb_text").val()==0){
+		$("#csa_tb_text_lb").css("color","red");
+		return false;
+	}
     document.form1.cont.value='<?php echo $multilingual_global_wait; ?>';
 	document.form1.cont.disabled=true;
 	document.getElementById("btn5").click();
@@ -158,13 +167,12 @@ function submitform()
                 editor = K.create('#csa_tb_text', {
 			width : '100%',
 			height: '180px',
+			afterBlur : function(){  
+                //编辑器失去焦点时直接同步，可以取到值  
+                this.sync();  
+            },
 			items:[
-        'source', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste',
-        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'clearhtml', 'quickformat', 'selectall', '|', 'forecolor', 'hilitecolor', 'lineheight', 'bold',
-        'italic', 'underline', 'strikethrough', 'removeformat', '|',   
-        'formatblock', 'fontname', 'fontsize', '|', 'insertfile',  'hr', 'pagebreak', 'anchor', 
-        'link', 'unlink', '|', 'about'
+        'bold','italic', 'underline', 'removeformat','insertorderedlist', 'insertunorderedlist', 'indent', 'outdent',  'quickformat',  'forecolor', 'hilitecolor',  'formatblock', 'fontsize', 'link', 
 ]
 });
         });
@@ -187,6 +195,13 @@ function submitform()
     $( "#csa_tb_manhour" ).change(function() {
       slider.slider( "value", this.selectedIndex + 0.5 );
     });
+
+    $( "#project_id" ).change(function() {
+    	$('#csa_tb_backup1').val(this.value);
+    	$('#csa_tb_backup3').val($('#project_id option:selected').attr('id'));
+    	$("#project_id").css("border-color","");
+    	
+      });
   });
   </script>
 
@@ -194,7 +209,7 @@ function submitform()
 
 <body>
 	<form action="<?php echo $editFormAction; ?>" method="post"
-		name="form1" id="form1" onsubmit='if($("#csa_tb_backup3").val()==0){$("#project_id").css("color","red");;return false;}'>
+		name="form1" id="form1">
 		<div class="modal-body" style="padding: 5px;">
 
 			<div class="form-group col-xs-12">
@@ -202,8 +217,8 @@ function submitform()
 				<?php if(empty($projectid)){?>
 				<div>
 					<select id="project_id" name="project_id"
-						onChange="$('#csa_tb_backup1').val(this.value);$('#csa_tb_backup3').val($('#project_id option:selected').attr('id'));" class="form-control">
-						<option value="0">请选择任务</option>
+						class="form-control">
+						<option value="0" id="pls_select_task">请选择任务</option>
 						<?php 
 						
 						mysql_select_db ( $database_tankdb, $tankdb );
@@ -341,7 +356,7 @@ function submitform()
 
 
 			<div class="form-group col-xs-12" style="margin-bottom: 0px;">
-				<label for="csa_tb_text"><?php echo $multilingual_global_log; ?></label>
+				<label id="csa_tb_text_lb" for="csa_tb_text"><?php echo $multilingual_global_log; ?></label>
 				<div>
 					<textarea name="csa_tb_text" id="csa_tb_text"></textarea>
 				</div>

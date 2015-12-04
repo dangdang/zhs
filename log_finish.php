@@ -1,9 +1,12 @@
 ﻿<script type="text/javascript">
-var P = window.parent, D = P.loadinndlg();   
-function closreload(url)
+function closreload(taskid)
 {
-    if(!url)
-	    P.reload();    
+    if(!taskid){
+	    window.parent.reload();
+    }else{
+    	top.location="default_task_edit.php?editID="+taskid+"&pagetab=mtask";
+    }
+	
 }
 </script>
-<?php echo "<script language='javascript'>closreload()</script>"; ?>
+<?php echo "<script language='javascript'>closreload(taskid=".$_GET['taskid'].")</script>"; ?>
