@@ -3,6 +3,7 @@
 <?php
 $logdate = $_GET['date'];
 $taskid = $_GET['taskid'];
+// echo $_SERVER['QUERY_STRING'];
 
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
