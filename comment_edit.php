@@ -132,16 +132,7 @@ function over()
                 editor = K.create('#tk_comm_title', {
 			width : '100%',
 			height: '295px',
-			items:[
-        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'cut', 'copy', 'paste',
-        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'forecolor', 'hilitecolor', 'lineheight', 'bold',
-        'italic', 'underline', 'strikethrough', 'removeformat', '|',   
-        'formatblock', 'fontname', 'fontsize', '|','image',
-        'flash', 'media', 'insertfile', 'table', 'hr', 'pagebreak', 'anchor', 
-        'link', 'unlink', '|', 'about'
-]
+			items:[<?php echo $KindEditorItems;?>]
 });
         });
 		

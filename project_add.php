@@ -160,16 +160,7 @@ if(str == '-2')window.open('project_status.php');
                 editor = K.create('#project_text', {
 			width : '100%',
 			height: '100px',
-			items:[
-        'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'cut', 'copy', 'paste',
-        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',
-        'flash', 'media', 'insertfile', 'table', 'hr', 'map', 'code', 'pagebreak', 'anchor', 
-        'link', 'unlink', '|', 'about'
-]
+			items:[<?php echo $KindEditorItems;?>]
 });
         });
 </script>

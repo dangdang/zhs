@@ -1,12 +1,23 @@
-﻿<script type="text/javascript">
-function closreload(taskid)
+﻿<?php 
+if(isset($_GET['url'])){
+	$url=urldecode($_GET['url']);
+	$reload=0;
+}else{
+	$reload=1;
+	$url="";
+}
+?>
+<script type="text/javascript">
+function closreload(reload)
 {
-    if(!taskid){
+    if(reload==1){
 	    window.parent.reload();
     }else{
-    	top.location="default_task_edit.php?editID="+taskid+"&pagetab=mtask";
+    	top.location="<?php echo $url;?>";
     }
 	
 }
 </script>
-<?php echo "<script language='javascript'>closreload(taskid=".$_GET['taskid'].")</script>"; ?>
+<?php 
+echo "<script language='javascript'>closreload(".$reload.")</script>";
+?>

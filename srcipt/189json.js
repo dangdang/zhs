@@ -4,16 +4,16 @@ $(function() {
 		return;
 	}
 	var mobile = $("#db_189").val();
-	
-	if (mobile!=undefined&&mobile.length==11) {
+
+	if (mobile != undefined && mobile.length == 11) {
 		jslog(mobile);
 		get189list(mobile);
-	}else{
+	} else {
 		reg189();
 	}
 });
-function reg189(){
-	var html= '<div id="no189">你还没有绑定189邮箱，<input type="button" onclick="javascript:bind1();" value="现在绑定"/>。</div>';
+function reg189() {
+	var html = '<div id="no189">你还没有绑定189邮箱，<input type="button" onclick="javascript:bind1();" value="现在绑定"/>。</div>';
 	html += '<div id="reg" style="display:none;">';
 	html += '<input type="hidden" name="ac" value="validate" /> 	  请输入你要绑定的189邮箱手机号码:<br />    <input name="mobile" type="text" id="mobile" value="" size="11" maxlength="11" /> 	    <input type="button" name="sendSms" id="sendSms" onclick="send(this);" value="发送验证码" />     (只支持C网手机)';
 	html += '<div id="smsStat"></div> <div id="receive" style="display:none;"> 接收到的短信验证码:<input name="v_code" type="text" id="v_code" size="6" maxlength="6" /><br /> 	  	    <input type="button" name="button" id="button" onclick="validate_mobile(this);" value="绑定189邮箱" /> 	</div>';
@@ -37,12 +37,17 @@ function get189list(mobile) {
 	showLoading($("#json_mail189"));
 	var rows = 6;
 	jslog("start get 189 list");
-	$.getJSON("/cn189/maillist",{mobile : mobile},
+	$
+			.getJSON(
+					"/cn189/maillist",
+					{
+						mobile : mobile
+					},
 					function(datass) {
 						showLoading($("#json_mail189"));
 						var html = "";
 						if (datass.error == "NOTREG") {
-							html="手机号码已经改变，请重新登录！";
+							html = "手机号码已经改变，请重新登录！";
 						} else if (datass.error == "GETLIST_ERROR") {
 							html += "获取邮件列表发生错误,请稍候重试。";
 						} else if (datass.error == "PARSE_ERROR") {
@@ -50,10 +55,13 @@ function get189list(mobile) {
 						} else {
 							html = '<table id="maillist189" class="itbl" width="100%" border="0" align="left" cellpadding="0" cellspacing="0">';
 							for ( var x in datass) {
-								var t=datass[x].title;
-								if(x>6||t==null||t=='undefined'){break;}
+								var t = datass[x].title;
+								if (x > 6 || t == null || t == 'undefined') {
+									break;
+								}
 								html += "<tr><td class='dot'></td><td class='dotted' ><a target='_mail189' href='/cn189/sso?remoteurl="
-										+ datass[x].url + "'>"
+										+ datass[x].url
+										+ "'>"
 										+ t
 										+ "</a></td></tr>";
 							}
@@ -83,14 +91,14 @@ function validate_mobile(obj) {
 			$("#receive").hide();
 			$("#success").show();
 			$("#db_189").val($('#mobile').val());
-			if(getQry("remoteurl").length>10){
+			if (getQry("remoteurl").length > 10) {
 				window.location.reload();
-			}else{
-				get189list($('#mobile').val());	
+			} else {
+				get189list($('#mobile').val());
 			}
-			
-		}else{
-			$("#smsStat").html('发生意外错误：'+data);
+
+		} else {
+			$("#smsStat").html('发生意外错误：' + data);
 		}
 	});
 }
@@ -115,8 +123,7 @@ function send(obj) {
 }
 function initmobile() {
 	// $.getJSON("http://stat.hq.ctc.com:8080/portal/sprymenu.php?jsoncallback=?",function(datass){
-	$
-			.getJSON(
+	$.getJSON(
 					"http://oa.hq.ctc.com/chtweboa/public/checkservertime.nsf/agtGetMobileEmail?openagent&jsoncallback=?",
 					{
 						userid : $("#userid").val()

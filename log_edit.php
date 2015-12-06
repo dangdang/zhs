@@ -114,7 +114,9 @@ $insertSQL2 = sprintf("INSERT INTO tk_log (tk_log_user, tk_log_action, tk_log_ty
                        GetSQLValueString($newID, "text"));  
 $Result3 = mysql_query($insertSQL2, $tankdb) or die(mysql_error());
 
-  $updateGoTo = "log_finish.php";
+  $updateGoTo = "log_finish.php?";
+  $url=urlencode("default_task_edit.php?editID=".$taskid."&pagetab=mtask");
+  $updateGoTo .="url=".$url;
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
@@ -177,15 +179,7 @@ var editor;
                 editor = K.create('#csa_tb_text', {
 			width : '100%',
 			height: '236px',
-			items:[
-        'source', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste',
-        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'forecolor', 'hilitecolor', 'lineheight', 'bold',
-        'italic', 'underline', 'strikethrough', 'removeformat', '|',   
-        'formatblock', 'fontname', 'fontsize', '|', 'insertfile',  'hr', 'pagebreak', 'anchor', 
-        'link', 'unlink', '|', 'about'
-]
+			items:[<?php echo $KindEditorItems;?>]
 });
         });
 //-->

@@ -175,14 +175,7 @@ function submitform()
                 editor = K.create('#csa_tb_text', {
 			width : '100%',
 			height: '236px',
-			items:[
-        'source', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste',
-        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'clearhtml', 'quickformat', 'selectall', '|', 'forecolor', 'hilitecolor', 'lineheight', 'bold',
-        'italic', 'underline', 'strikethrough', 'removeformat', '|',   
-        'formatblock', 'fontname', 'fontsize', '|', 'insertfile',  'hr', 'pagebreak', 'anchor', 
-        'link', 'unlink', '|', 'about'
-]
+			items:[<?php echo $KindEditorItems;?>]
 });
         });
 		
