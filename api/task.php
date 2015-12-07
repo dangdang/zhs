@@ -20,14 +20,16 @@
  }
  
  mysql_select_db($database_tankdb, $tankdb);
- $q = 'SELECT * FROM tk_task inner join tk_status on tk_task.csa_remark2=tk_status.id where csa_to_user='.$_SESSION['MM_uid'].' and csa_plan_st>="'.$start.'" and csa_plan_et<="'.$end.'"';
- 
+ $q = 'SELECT * FROM tk_task 
+ 		inner join tk_status on tk_task.csa_remark2=tk_status.id
+ 		inner join tk_task_tpye on tk_task.csa_type=tk_task_tpye.id
+ 		where csa_to_user='.$_SESSION['MM_uid'].' and csa_plan_st>="'.$start.'" and csa_plan_et<="'.$end.'"';
  $result = mysql_query($q, $tankdb) or die(mysql_error());
  while ($a=mysql_fetch_assoc($result)){
  ?>
 {
 "id":"<?php echo $a["TID"]?>",
-"title":"<?php echo strip_tags($a["csa_text"])?>",
+"title":" [ <?php echo $a["task_tpye"];?> ] <?php echo strip_tags($a["csa_text"])?>",
 "start":"<?php echo $a["csa_plan_st"]?>",
 "end":"<?php echo $a["csa_plan_et"]?>",
 "backgroundColor":"<?php 
