@@ -9,7 +9,10 @@ $language = "cn";
 $advsearch = get_item( 'advsearch' );//从表tank_item取回相应的值，主要是后天参数，
 $outofdate = get_item( 'outofdate' ) ;//是否显示过期任务
 
-$KindEditorItems="'bold','italic', 'underline', 'removeformat','insertorderedlist', 'insertunorderedlist', 'indent','outdent',  'quickformat',  'forecolor', 'hilitecolor',  'formatblock', 'fontsize', 'link'"
+$KindEditorItems="'quickformat','bold','italic', 'underline','|',
+		'formatblock', 'fontsize','forecolor', 'hilitecolor', 'removeformat','|',
+		'indent','outdent','insertorderedlist', 'insertunorderedlist','|',
+		'link','insertfile'";
  
 ?>
 <?php require "multilingual/language_$language".".php"; ?>

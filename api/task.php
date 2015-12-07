@@ -47,7 +47,7 @@ echo substr($str[0],29);
  ?>
 {
 "id":"<?php echo $a["csa_tb_backup1"];?>",
-"title":"<?php echo substr(trim(strip_tags($a["csa_tb_text"])),0,100)?>",
+"title":"<?php echo preg_replace('/\s\s+/', '', substr(trim(strip_tags(nl2br($a["csa_tb_text"]))),0,100))?>",
 "start":"<?php 
 $logyear = str_split($a['csa_tb_year'],4);
 $logmonth = str_split($logyear[1],2);
