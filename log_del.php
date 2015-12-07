@@ -55,7 +55,9 @@ if ((isset($_POST["log_delete"])) && ($_POST["log_delete"] == "form1")) {
   mysql_select_db($database_tankdb, $tankdb);
   $Result1 = mysql_query($deleteSQL, $tankdb) or die(mysql_error());
 
-  $deleteGoTo = "log_finish.php";
+  $deleteGoTo = "log_finish.php?";
+  $url=urlencode("default_task_edit.php?editID=".$taskid."&pagetab=mtask");
+  $deleteGoTo .="url=".$url;
   if (isset($_SERVER['QUERY_STRING'])) {
     $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
     $deleteGoTo .= $_SERVER['QUERY_STRING'];

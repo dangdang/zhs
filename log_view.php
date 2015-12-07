@@ -155,8 +155,6 @@ $logmonth = str_split($logyear[1],2);
     <td width="12%" class="info_task_title"><?php echo $multilingual_user_view_cost; ?></td>
     <td><?php echo $row_log['csa_tb_manhour']; ?> <?php echo $multilingual_global_hour; ?></td>
     </tr>
-	<?php if ($row_Recordset_task['test01'] <> null) {?>
-	<?php } ?>
 </table></td>
     </tr>
 	

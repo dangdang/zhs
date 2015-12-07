@@ -1936,4 +1936,22 @@ $file_view_arr = array ();
 
 return $file_view_arr;
 }
+
+function getSubTaskList($tid,$projectid) {
+	global $tankdb;
+	$qt = "SELECT * FROM `tk_task` inner join `tk_task_tpye` on tk_task.csa_type=tk_task_tpye.id where csa_remark4=".$tid;
+	//and csa_to_user=".$_SESSION['MM_uid']."
+	$rt = mysql_query ( $qt, $tankdb ) or die ( mysql_error () );
+	while ( $at = mysql_fetch_assoc ( $rt ) ) {
+		echo '<option id="'.$projectid.'" value="'.$at["TID"].'"';
+		if($at['csa_to_user']!=$_SESSION['MM_uid']){echo "disabled";}
+		echo '>|---';
+		
+		for ($i = 1; $i < $at["csa_remark6"]; $i++) {
+			echo "------";	
+		}
+		echo '['.$at["task_tpye"].']'.$at["csa_text"].'</option>';
+		getSubTaskList($at["TID"],$projectid);
+	}								
+}
 ?>

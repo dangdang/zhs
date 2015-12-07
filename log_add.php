@@ -76,11 +76,14 @@ if ((isset ( $_POST ["log_insert"] )) && ($_POST ["log_insert"] == "form1")) {
 	$insertSQL2 = sprintf ( "INSERT INTO tk_log (tk_log_user, tk_log_action, tk_log_type, tk_log_class, tk_log_description) VALUES (%s, %s, %s, 1, ''  )", GetSQLValueString ( $newName, "text" ), GetSQLValueString ( $action, "text" ), GetSQLValueString ( $newID, "text" ) );
 	$Result3 = mysql_query ( $insertSQL2, $tankdb ) or die ( mysql_error () );
 	
-	$insertGoTo = "log_finish.php";
+	$insertGoTo = "log_finish.php?";
+	$url=urlencode("default_task_edit.php?editID=".$_POST['csa_tb_backup1']."&pagetab=mtask");
+	$insertGoTo .="url=".$url;
 	if (isset ( $_SERVER ['QUERY_STRING'] )) {
 		$insertGoTo .= (strpos ( $insertGoTo, '?' )) ? "&" : "?";
-		$insertGoTo .= $_SERVER ['QUERY_STRING']."&taskid=".$_POST ['csa_tb_backup1'];
+		$insertGoTo .= $_SERVER ['QUERY_STRING'];
 	}
+	
 	
 	$msg_to = $mailto;
 	$msg_from = $nowuser;
@@ -171,9 +174,7 @@ function submitform()
                 //编辑器失去焦点时直接同步，可以取到值  
                 this.sync();  
             },
-			items:[
-        'bold','italic', 'underline', 'removeformat','insertorderedlist', 'insertunorderedlist', 'indent', 'outdent',  'quickformat',  'forecolor', 'hilitecolor',  'formatblock', 'fontsize', 'link', 
-]
+			items:[<?php echo $KindEditorItems;?>]
 });
         });
 		
@@ -198,6 +199,16 @@ function submitform()
 
     $( "#project_id" ).change(function() {
     	$('#csa_tb_backup1').val(this.value);
+    	$.getJSON("api/checkData.php",{date:"<?php echo $logdate;?>",taskid:this.value}, function(data) {
+					if(data.result>0){
+						window.location="log_view.php?date=<?php echo $logdate;?>&taskid="+$('#csa_tb_backup1').val();
+						return false;
+					}
+
+				});
+	
+        
+    	
     	$('#csa_tb_backup3').val($('#project_id option:selected').attr('id'));
     	$("#project_id").css("border-color","");
     	
@@ -216,41 +227,36 @@ function submitform()
 				
 				<?php if(empty($projectid)){?>
 				<div>
-					<select id="project_id" name="project_id"
-						class="form-control">
+					<select id="project_id" name="project_id" class="form-control">
 						<option value="0" id="pls_select_task">请选择任务</option>
-						<?php 
-						
-						mysql_select_db ( $database_tankdb, $tankdb );
-						$q="SELECT * FROM `tk_project`";
-						$r = mysql_query ( $q, $tankdb ) or die ( mysql_error () );
-						while ($a=mysql_fetch_assoc($r)){
+						<?php
+					
+					mysql_select_db ( $database_tankdb, $tankdb );
+					$q = "SELECT DISTINCT * FROM tk_project
+							inner join tk_status_project on tk_project.project_status=tk_status_project.psid
+							INNER JOIN tk_project_type on tk_project.project_type=tk_project_type.ptid
+							inner join tk_task on tk_project.id=tk_task.csa_project
+							WHERE tk_task.csa_to_user=".$_SESSION['MM_uid']." AND tk_status_project.task_status NOT LIKE '%".$multilingual_dd_status_prjfinish."%'
+							GROUP BY project_name";
+					echo $q;
+					$r = mysql_query ( $q, $tankdb ) or die ( mysql_error () );
+					while ( $a = mysql_fetch_assoc ( $r ) ) {
 						?>
-						<option value="<?php echo $a["id"]?>" disabled>项目：<?php echo $a["project_name"]?></option>
-							<?php 
-							
-							$qt="SELECT * FROM `tk_task` where csa_project=87 order by TID,csa_remark6";
-							$rt = mysql_query ( $qt, $tankdb ) or die ( mysql_error () );
-							while ($at=mysql_fetch_assoc($rt)){
+						<optgroup label="<?php echo $a["project_type_name"]?>项目：<?php echo $a["project_name"]?>">
+							<?php
+						
+						$qt = "SELECT * FROM `tk_task`
+									inner join `tk_task_tpye` on tk_task.csa_type=tk_task_tpye.id
+									where tk_task.csa_project=" . $a ["id"] . " AND csa_remark4=-1";
+						//and csa_to_user=".$_SESSION['MM_uid']."
+						$rt = mysql_query ( $qt, $tankdb ) or die ( mysql_error () );
+						while ( $at = mysql_fetch_assoc ( $rt ) ) {
 							?>
-							<option id="<?php echo $a["id"]?>" text="<?php echo $a["project_name"]?>" value="<?php echo $at["TID"]?>">
-							<?php 
-							switch ($at["csa_remark6"]){
-								case 1:
-									echo "|----";
-									break;
-								case 2:
-									echo "  |--------";
-									break;
-								case 3:
-									echo "  |----------------";
-									break;
-								default:
-									echo "  |--";
-							}
-							?>
-							<?php echo $at["csa_text"]?></option>
-							<?php }?>
+							<option id="<?php echo $a["id"]?>"	value="<?php echo $at["TID"]?>" <?php if($at['csa_to_user']!=$_SESSION['MM_uid']){echo "disabled";}?>>|---[<?php echo $at["task_tpye"];?>]<?php echo $at["csa_text"]?></option>
+							<?php
+							getSubTaskList($at["TID"],$a['id']);
+						}?>
+						</optgroup>
 						<?php }?>
 					</select>
 
@@ -261,13 +267,13 @@ function submitform()
 
 			<div class="form-group col-xs-12">
 				<label for="csa_tb_status">
-				<?php
+				</label>
+				<div class="input-group">
+					<span class="input-group-addon"><?php
 				$logyear = str_split ( $logdate, 4 );
 				$logmonth = str_split ( $logyear [1], 2 );
 				?>
-<?php echo $logyear[0]; ?>-<?php echo $logmonth[0]; ?>-<?php echo $logmonth[1]; ?></label>
-				<div class="input-group">
-					<span class="input-group-addon"><?php echo $multilingual_default_task_status; ?></span>
+<?php echo $logyear[0]; ?>-<?php echo $logmonth[0]; ?>-<?php echo $logmonth[1]; ?> <?php echo $multilingual_default_task_status; ?></span>
 					<select name="csa_tb_status" id="csa_tb_status"
 						class="form-control">
                 <?php
@@ -291,7 +297,9 @@ function submitform()
 
 				<div>
 
-					<label for="csa_tb_manhour" class="pull-left"><?php echo $multilingual_user_view_cost; ?></label>
+					<label for="csa_tb_manhour" class="pull-left">
+					
+					<?php echo $multilingual_user_view_cost; ?></label>
 
 					<div class="pull-right">
 						<select name="csa_tb_manhour" id="csa_tb_manhour">

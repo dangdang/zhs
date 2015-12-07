@@ -106,8 +106,11 @@ $totalRows_Recordset_project_type = mysql_num_rows($Recordset_project_type);
            },
           events: 'api/task.php',
           eventClick: function(event, element) {
-        	  window.location="default_task_edit.php?editID="+event.id+"&pagetab=mtask"
-//               J.dialog.get({ id: event.id, title: '工作日志', page: 'log_view.php?taskid=' });
+        	  if (event.url.indexOf("log_view")>=0) {
+              J.dialog.get({ id: event.id, title: '工作日志', page: event.url });
+              return false;
+        	  }
+        	  
 
           }
         });
@@ -123,12 +126,6 @@ $totalRows_Recordset_project_type = mysql_num_rows($Recordset_project_type);
   <div id='calendar' style=" max-width: 900px;margin: 0 auto;font-size: 14px;"></div>
 
 </div><!--subnav -->
-
-<?php 
-echo $_SESSION['MM_Displayname'].",";
-echo $_SESSION['MM_uid'].",";
-echo $_SESSION['MM_rank'];
-?>
 
   <?php require('foot.php'); ?>
 
