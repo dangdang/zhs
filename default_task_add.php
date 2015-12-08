@@ -7,6 +7,22 @@ if ($_SESSION['MM_rank'] < "3") {
   header("Location: ". $restrictGoTo); 
   exit;
 }
+//disable to distribute task if project not approved.
+$q="select count(*) from tk_project 
+		inner join tk_approval on tk_project.id=tk_approval.project_id
+		where tk_project.id=".$_GET["projectID"]." and tk_approval.type=1 and tk_approval.state=1";
+$r=mysql_query($q);
+$a=mysql_fetch_row($r);
+if($a[0]<2){
+	echo "
+				<script language=javascript>
+				alert('项目还没有通过审批，不能下发任务');
+				this.window.history.go(-1);
+				</script>
+				";
+	exit();
+}
+
 
 $myid = $_SESSION['MM_uid'];
 

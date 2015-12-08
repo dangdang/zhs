@@ -549,7 +549,7 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
 			 <a href="project_edit.php?editID=<?php echo $row_DetailRS1['id']; ?>">
 			 <span class="glyphicon glyphicon-pencil"></span> <?php echo $multilingual_global_action_edit; ?>			 </a>			 </td>
 			 <?php }  ?> 
-			 <?php if($_SESSION['MM_rank'] > "3")  {  ?>
+			 <?php if($_SESSION['MM_rank'] > "4")  {  ?>
 			 <td width="10%">
 			 <a class="mouse_over" onClick="javascript:if(confirm( '<?php 
                  if($totalRows_Recordset_task == "0"){

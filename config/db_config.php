@@ -16,4 +16,10 @@ $KindEditorItems="'quickformat','bold','italic', 'underline','|',
 
 $HOME="/zhs";
 
+$a_approval_type=array(
+		"1" => "创建项目",
+		"2" => "删除项目"
+		
+);
+
 ?>

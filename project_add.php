@@ -73,6 +73,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     
     $Result1 = mysql_query($insertSQL, $tankdb) or die(mysql_error());
     $newID = mysql_insert_id();
+    
+    //Generate approval request
+    $q="INSERT INTO `tk_approval` (`type`, `subject`, `create_date`, `project_id`, `sender`, `receiver`, `update_date`) 
+    		VALUES ('1', '关于新建[".$_POST['project_name']."]项目的审批请示', now(), $newID, '".$_SESSION['MM_uid']."',
+    		'".$_POST['selected_project_Division_engineer']."', now());";
+    mysql_query($q);
     $insertGoTo = "project_view.php?recordID=$newID";
     if (isset($_SERVER['QUERY_STRING'])) {
         $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
@@ -469,8 +475,8 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                              <div class="form-group  col-xs-12" >
                               <label for="project_manager" ><?php echo $multilingual_project_touser; ?><span id="csa_to_user_msg" ></span></label>
                                  <div>
-                                    <select id="project_manager"   name="project_manager" multiple="multiple"> <!--style="width:100%;overflow:hidden;"-->  //class="form-control">
-	                                  <?php foreach(get_user_select() as $key => $val){ ?>
+                                    <select id="project_manager"   name="project_manager" multiple="multiple"> 
+	                                  <?php foreach(get_user_select(0,4) as $key => $val){ ?>
                                           <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                       <?php } ?>
 									<!--todo:如果是管理员？可以创建新的人员,需增加代码，新建用户-->
