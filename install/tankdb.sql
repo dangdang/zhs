@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.0.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2015-12-09 01:25:00
--- 服务器版本： 10.0.17-MariaDB
+-- Generation Time: Dec 08, 2015 at 10:09 AM
+-- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -23,9 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_announcement`
+-- Table structure for table `tk_announcement`
 --
 
+DROP TABLE IF EXISTS `tk_announcement`;
 CREATE TABLE `tk_announcement` (
   `AID` bigint(20) UNSIGNED NOT NULL,
   `tk_anc_title` varchar(80) NOT NULL,
@@ -36,7 +37,7 @@ CREATE TABLE `tk_announcement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_announcement`
+-- Dumping data for table `tk_announcement`
 --
 
 INSERT INTO `tk_announcement` (`AID`, `tk_anc_title`, `tk_anc_text`, `tk_anc_type`, `tk_anc_create`, `tk_anc_lastupdate`) VALUES
@@ -46,9 +47,38 @@ INSERT INTO `tk_announcement` (`AID`, `tk_anc_title`, `tk_anc_text`, `tk_anc_typ
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_bug`
+-- Table structure for table `tk_approval`
 --
 
+DROP TABLE IF EXISTS `tk_approval`;
+CREATE TABLE `tk_approval` (
+  `id` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `subject` varchar(200) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `task_id` int(11) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `receiver` int(11) NOT NULL,
+  `state` tinyint(4) NOT NULL DEFAULT '0',
+  `update_date` datetime NOT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tk_approval`
+--
+
+INSERT INTO `tk_approval` (`id`, `type`, `subject`, `create_date`, `project_id`, `task_id`, `sender`, `receiver`, `state`, `update_date`, `parent_id`) VALUES
+(4, 1, '关于新建[asdfasdf1]项目的审批请示', '2015-12-08 17:07:00', 90, 0, 1, 51, 0, '2015-12-08 17:07:00', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tk_bug`
+--
+
+DROP TABLE IF EXISTS `tk_bug`;
 CREATE TABLE `tk_bug` (
   `bugid` bigint(20) UNSIGNED NOT NULL,
   `tk_bug_title` text,
@@ -79,9 +109,10 @@ CREATE TABLE `tk_bug` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_comment`
+-- Table structure for table `tk_comment`
 --
 
+DROP TABLE IF EXISTS `tk_comment`;
 CREATE TABLE `tk_comment` (
   `coid` bigint(20) UNSIGNED NOT NULL,
   `tk_comm_title` text NOT NULL,
@@ -93,7 +124,7 @@ CREATE TABLE `tk_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_comment`
+-- Dumping data for table `tk_comment`
 --
 
 INSERT INTO `tk_comment` (`coid`, `tk_comm_title`, `tk_comm_text`, `tk_comm_type`, `tk_comm_user`, `tk_comm_pid`, `tk_comm_lastupdate`) VALUES
@@ -106,9 +137,10 @@ INSERT INTO `tk_comment` (`coid`, `tk_comm_title`, `tk_comm_text`, `tk_comm_type
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_document`
+-- Table structure for table `tk_document`
 --
 
+DROP TABLE IF EXISTS `tk_document`;
 CREATE TABLE `tk_document` (
   `docid` bigint(20) UNSIGNED NOT NULL,
   `tk_doc_title` varchar(80) NOT NULL,
@@ -126,7 +158,7 @@ CREATE TABLE `tk_document` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_document`
+-- Dumping data for table `tk_document`
 --
 
 INSERT INTO `tk_document` (`docid`, `tk_doc_title`, `tk_doc_description`, `tk_doc_attachment`, `tk_doc_class1`, `tk_doc_class2`, `tk_doc_type`, `tk_doc_create`, `tk_doc_createtime`, `tk_doc_edit`, `tk_doc_edittime`, `tk_doc_backup1`, `tk_doc_backup2`) VALUES
@@ -140,14 +172,16 @@ INSERT INTO `tk_document` (`docid`, `tk_doc_title`, `tk_doc_description`, `tk_do
 (10, 'RWEEWE', 'WRWRWERWERW', 'upload/59072b0c81a73d81a07af3b60b6aef10_618.jpg', -1, 9, '', 1, '2015-12-06 08:54:33', 1, '2015-12-06 07:55:10', 0, ''),
 (11, 'dfdfdf', 'dfdfdfdfd', '', -1, -1, '', 1, '2015-12-06 10:51:14', 1, '2015-12-06 09:51:19', 1, ''),
 (12, 'asfsdf', '', '', -1, -1, '', 1, '2015-12-06 12:46:08', 1, '2015-12-06 11:46:15', 1, ''),
-(13, 'zxvzxvcz', 'zxv', '', -1, -1, '', 1, '2015-12-06 12:47:53', 1, '2015-12-06 11:47:58', 1, '');
+(13, 'zxvzxvcz', 'zxv', '', -1, -1, '', 1, '2015-12-06 12:47:53', 1, '2015-12-06 11:47:58', 1, ''),
+(16, '常见问题', '<ol>\r\n	<li>\r\n		问题一<br />\r\n<br />\r\n	</li>\r\n	<li>\r\n		问题二\r\n	</li>\r\n</ol>', '', 87, 0, '', 1, '2015-12-08 06:20:48', 1, '2015-12-08 05:21:31', 0, '');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item`
+-- Table structure for table `tk_item`
 --
 
+DROP TABLE IF EXISTS `tk_item`;
 CREATE TABLE `tk_item` (
   `item_id` smallint(4) UNSIGNED NOT NULL,
   `tk_item_key` varchar(60) CHARACTER SET utf8 NOT NULL,
@@ -159,7 +193,7 @@ CREATE TABLE `tk_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tk_item`
+-- Dumping data for table `tk_item`
 --
 
 INSERT INTO `tk_item` (`item_id`, `tk_item_key`, `tk_item_value`, `tk_item_title`, `tk_item_description`, `tk_item_type`, `tk_item_lastupdate`) VALUES
@@ -184,9 +218,10 @@ INSERT INTO `tk_item` (`item_id`, `tk_item_key`, `tk_item_value`, `tk_item_title
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item01`
+-- Table structure for table `tk_item01`
 --
 
+DROP TABLE IF EXISTS `tk_item01`;
 CREATE TABLE `tk_item01` (
   `im01id` bigint(20) UNSIGNED NOT NULL,
   `tk_im01_field01` text,
@@ -208,9 +243,10 @@ CREATE TABLE `tk_item01` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item02`
+-- Table structure for table `tk_item02`
 --
 
+DROP TABLE IF EXISTS `tk_item02`;
 CREATE TABLE `tk_item02` (
   `im02id` bigint(20) UNSIGNED NOT NULL,
   `tk_im02_field01` text,
@@ -232,9 +268,10 @@ CREATE TABLE `tk_item02` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item03`
+-- Table structure for table `tk_item03`
 --
 
+DROP TABLE IF EXISTS `tk_item03`;
 CREATE TABLE `tk_item03` (
   `im03id` bigint(20) UNSIGNED NOT NULL,
   `tk_im03_field01` text,
@@ -256,9 +293,10 @@ CREATE TABLE `tk_item03` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item04`
+-- Table structure for table `tk_item04`
 --
 
+DROP TABLE IF EXISTS `tk_item04`;
 CREATE TABLE `tk_item04` (
   `im04id` bigint(20) UNSIGNED NOT NULL,
   `tk_im04_field01` text,
@@ -280,9 +318,10 @@ CREATE TABLE `tk_item04` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item05`
+-- Table structure for table `tk_item05`
 --
 
+DROP TABLE IF EXISTS `tk_item05`;
 CREATE TABLE `tk_item05` (
   `im05id` bigint(20) UNSIGNED NOT NULL,
   `tk_im05_field01` text,
@@ -304,9 +343,10 @@ CREATE TABLE `tk_item05` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_item06`
+-- Table structure for table `tk_item06`
 --
 
+DROP TABLE IF EXISTS `tk_item06`;
 CREATE TABLE `tk_item06` (
   `im06id` bigint(20) UNSIGNED NOT NULL,
   `tk_im06_field01` text,
@@ -343,9 +383,10 @@ CREATE TABLE `tk_item06` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_kpi`
+-- Table structure for table `tk_kpi`
 --
 
+DROP TABLE IF EXISTS `tk_kpi`;
 CREATE TABLE `tk_kpi` (
   `kpid` bigint(20) UNSIGNED NOT NULL,
   `tk_kpi_user` text,
@@ -367,9 +408,10 @@ CREATE TABLE `tk_kpi` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_log`
+-- Table structure for table `tk_log`
 --
 
+DROP TABLE IF EXISTS `tk_log`;
 CREATE TABLE `tk_log` (
   `logid` bigint(20) UNSIGNED NOT NULL,
   `tk_log_user` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -381,7 +423,7 @@ CREATE TABLE `tk_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_log`
+-- Dumping data for table `tk_log`
 --
 
 INSERT INTO `tk_log` (`logid`, `tk_log_user`, `tk_log_action`, `tk_log_time`, `tk_log_type`, `tk_log_class`, `tk_log_description`) VALUES
@@ -1239,14 +1281,21 @@ INSERT INTO `tk_log` (`logid`, `tk_log_user`, `tk_log_action`, `tk_log_time`, `t
 (851, 46, '修改了 2015-12-10 日志，任务状态为：未开始，耗时：0小时&nbsp;&nbsp;<p style="text-indent:2em;">\r\n	<a href="/zhs/editor/attached/file/20151207/20151207004637_92773.jpg" target="_blank">fasdfasdfasdfasdf</a>\r\n</p>\r\n<p style="text-indent:2em;">\r\n	<br />\r\n</p>\r\n<p style="text-indent:2em;">\r\n	<a href="/zhs/editor/attached/file/20151207/20151207004733_42338.jpg" target="_blank">项目图片</a>\r\n</p>', '2015-12-06 23:48:05', 197, 1, ''),
 (852, 46, '修改了 2015-12-10 日志，任务状态为：未开始，耗时：0小时&nbsp;&nbsp;<p style="text-indent:2em;">\r\n	<a href="/zhs/editor/attached/file/20151207/20151207004637_92773.jpg" target="_blank">fasdfasdfasdfasdf</a>\r\n</p>', '2015-12-06 23:49:09', 197, 1, ''),
 (853, 46, '修改了 2015-12-10 日志，任务状态为：未开始，耗时：0小时&nbsp;&nbsp;<p style="text-indent:2em;">\r\n	aaaaa\r\n</p>\r\n<p style="text-indent:2em;">\r\n	bbbb\r\n</p>\r\n<p style="text-indent:2em;">\r\n	cccc\r\n</p>', '2015-12-06 23:49:34', 197, 1, ''),
-(854, 46, '创建了任务', '2015-12-07 00:14:06', 204, 1, '');
+(854, 46, '创建了任务', '2015-12-07 00:14:06', 204, 1, ''),
+(855, 1, '创建了任务', '2015-12-08 02:26:05', 205, 1, ''),
+(856, 1, '创建了任务', '2015-12-08 02:26:53', 206, 1, ''),
+(857, 1, '创建了文档', '2015-12-08 02:39:19', 14, 2, ''),
+(858, 1, '创建了文档', '2015-12-08 02:39:31', 15, 2, ''),
+(859, 1, '创建了文档', '2015-12-08 05:21:31', 16, 2, ''),
+(860, 1, '审核了任务，审核结果为：&nbsp;完成验收', '2015-12-08 05:24:01', 197, 1, '');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_manhour`
+-- Table structure for table `tk_manhour`
 --
 
+DROP TABLE IF EXISTS `tk_manhour`;
 CREATE TABLE `tk_manhour` (
   `MHID` bigint(20) UNSIGNED NOT NULL,
   `manhour` text,
@@ -1259,9 +1308,10 @@ CREATE TABLE `tk_manhour` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_menu`
+-- Table structure for table `tk_menu`
 --
 
+DROP TABLE IF EXISTS `tk_menu`;
 CREATE TABLE `tk_menu` (
   `meid` bigint(20) UNSIGNED NOT NULL,
   `tk_menu_title_cn` text,
@@ -1277,9 +1327,10 @@ CREATE TABLE `tk_menu` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_message`
+-- Table structure for table `tk_message`
 --
 
+DROP TABLE IF EXISTS `tk_message`;
 CREATE TABLE `tk_message` (
   `meid` bigint(20) UNSIGNED NOT NULL,
   `tk_mess_touser` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -1292,7 +1343,7 @@ CREATE TABLE `tk_message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- 转存表中的数据 `tk_message`
+-- Dumping data for table `tk_message`
 --
 
 INSERT INTO `tk_message` (`meid`, `tk_mess_touser`, `tk_mess_fromuser`, `tk_mess_title`, `tk_mess_text`, `tk_mess_status`, `tk_mess_type`, `tk_mess_time`) VALUES
@@ -1817,14 +1868,25 @@ INSERT INTO `tk_message` (`meid`, `tk_mess_touser`, `tk_mess_fromuser`, `tk_mess
 (674, 1, 46, '更新了来自您的任务: <a href=''default_task_edit.php?editID=197&pagetab=ftask#log''>task1 to 李四</a>', NULL, 1, 0, '2015-12-06 23:49:34'),
 (675, 1, 46, '指派给您一个新任务: <a href=''default_task_edit.php?editID=204&pagetab=mtask''>asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfadf</a>', NULL, 1, 0, '2015-12-07 00:14:06'),
 (676, 1, 46, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=204&pagetab=mtask''>asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfadf</a>', NULL, 1, 0, '2015-12-07 00:14:06'),
-(677, 45, 46, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=204&pagetab=mtask''>asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfadf</a>', NULL, 1, 0, '2015-12-07 00:14:06');
+(677, 45, 46, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=204&pagetab=mtask''>asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfadf</a>', NULL, 1, 0, '2015-12-07 00:14:06'),
+(678, 47, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(679, 46, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(680, 50, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(681, 48, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(682, 45, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(683, 51, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(684, 49, 1, '抄送给您一个新任务: <a href=''default_task_edit.php?editID=205&pagetab=mtask''>程序开发</a>', NULL, 1, 0, '2015-12-08 02:26:05'),
+(685, 46, 1, '审核了您的任务: <a href=''default_task_edit.php?editID=197&pagetab=mtask''>task1 to 李四</a>', NULL, 1, 0, '2015-12-08 05:24:01'),
+(686, 46, 1, '审核了抄送给您的任务: <a href=''default_task_edit.php?editID=197&pagetab=mtask''>task1 to 李四</a>', NULL, 1, 0, '2015-12-08 05:24:01'),
+(687, 45, 1, '审核了抄送给您的任务: <a href=''default_task_edit.php?editID=197&pagetab=mtask''>task1 to 李四</a>', NULL, 1, 0, '2015-12-08 05:24:01');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_mul`
+-- Table structure for table `tk_mul`
 --
 
+DROP TABLE IF EXISTS `tk_mul`;
 CREATE TABLE `tk_mul` (
   `muid` bigint(20) UNSIGNED NOT NULL,
   `tk_mul_title` text,
@@ -1839,9 +1901,10 @@ CREATE TABLE `tk_mul` (
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_project`
+-- Table structure for table `tk_project`
 --
 
+DROP TABLE IF EXISTS `tk_project`;
 CREATE TABLE `tk_project` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `project_name` varchar(80) NOT NULL,
@@ -1870,19 +1933,24 @@ CREATE TABLE `tk_project` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_project`
+-- Dumping data for table `tk_project`
 --
 
 INSERT INTO `tk_project` (`id`, `project_name`, `project_code`, `project_text`, `project_type`, `project_from`, `project_from_user`, `project_from_contact`, `project_start`, `project_end`, `project_to_dept`, `project_to_user`, `project_status`, `project_remark`, `project_lastupdate`, `project_importance`, `project_source`, `project_month_eval`, `project_dean`, `project_manager`, `project_chief_engineer`, `project_Director`, `project_Division_engineer`, `project_member`) VALUES
 (85, '交通发展研究', '', '', 22, '', '', '', '2015-12-03', '2015-12-10', '', 46, 2, '', '2015-12-03 01:43:12', '一般', '交通厅', 1, '45', '46', '46', '45', '46', '46'),
-(86, '交通战略研究', '', '', 23, '', '', '', '2015-12-03', '2015-12-10', '', 46, 2, '', '2015-12-03 01:43:47', '一般', '交通局', 1, '45', '46', '46,45', '46', '46,45', '45,46');
+(86, '交通战略研究', '', '12345', 23, '', '', '', '2015-12-03', '2015-12-10', '', 46, 9, '', '2015-12-08 05:43:24', '一般', '交通局', 1, '48', '46', '49', '50', '51', '45,46'),
+(87, '本系统开发与运维', '', '<div>\r\n	<p align="right" style="margin-left:14.0pt;text-align:right;text-indent:0cm;">\r\n		<a name="OLE_LINK2"></a><a name="OLE_LINK1"></a><b>综合所项目管理系统（</b><b>ZHS</b><b>）功能说明（</b><b>20151206</b><b>）</b><b></b> \r\n	</p>\r\n	<h1 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>1 </span>系统总体描述<span></span> \r\n	</h1>\r\n	<p style="text-indent:28.0pt;">\r\n		综合所项目管理系统（<span>Zong He Suo system</span>）核心功能主要是为了方便员工填报工作日志，优化所里项目管理流程，是综合所进行精细化管理的重要工具。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		系统采用<span>B/S</span>结构，在院内网架设<span>web</span>服务器，所内各位职工通过<span>PC</span>段或手机端<span>web</span>浏览器访问指定<span>IP</span>地址即可（利用院<span>vpn</span>，也可以在外网访问）。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		系统实现的主要思路是在开源项目管理系统<span>WSS </span>（<span>http://www.wssys.net/zh-CN/</span>）基础上结合综合所工作特点进行二次开发，前端界面以<span>Bootstrap</span>为主，服务器端采用<span>Php+mysql+wamp</span>。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		系统的设计应遵循“简约易用、安全可靠”的原则，一方面应方便各位职工填报日志、管理项目，不增添额外负担，另一方面，系统的日志数据、项目数据要做好安全备份，并区分不用用户身份的访问权限。<span></span> \r\n	</p>\r\n	<h1 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>2 </span>基本概念及工作流程<span></span> \r\n	</h1>\r\n	<p style="text-indent:28.0pt;">\r\n		本系统有三个主要概念“项目、任务、日志”。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>1</span>）项目负责人可以创建多个“项目”，每个“项目”可以分解为多个“任务”。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>2</span>）每项“任务”可以指定一个项目成员来完成，该项目成员可以每天填报“工作日志”，并更新“任务”的进度。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>3</span>）每个“任务”的进度汇总更新后，可以更新“项目”的进度，从而达到跟踪“项目”进度的目的。<span></span> \r\n	</p>\r\n	<p style="text-indent:0cm;">\r\n		<span></span> \r\n	</p>\r\n	<h1 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3 </span>主要功能<span></span> \r\n	</h1>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.1 </span>项目管理<span></span> \r\n	</h2>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.1.1 </span>项目创建<span></span> \r\n	</h3>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		项目创建主要包括三步：<span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>1</span>）项目负责人新建项目，主要包括以下信息：项目名称、项目类型、任务来源、项目估计人月、项目状态、项目重要度、开始时间、结束时间、项目概述、项目负责人、项目主管院长（要求下拉列表框仅出现身份是院长的人）、项目主管总工（要求下拉列表框仅出现身份是总工的人）、项目主管所长（下拉列表框仅出现所长、副所长、所长助理）、项目主管主任工程师（下拉列表框仅出现主任工程师）、项目组成员。<span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		院长、总工、所长、主任工程师等身份（职称）的认定应由管理员在后台进行设置。<span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>2</span>）项目负责人创建项目后向所项目主管（由系统管理员在后台指定）提交，系统自动向所项目主管发消息提醒审查项目的创建。此时项目尚未正式生效，无法分解任务， <span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>3</span>）项目主管审核通过后向所长提交，系统自动向所长发消息提醒审查。<span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>4</span>）所长通过审查后，项目正式生效，系统发消息通知负责人。<span></span> \r\n	</p>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.1.2 </span>项目修改<span></span> \r\n	</h3>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>1</span>）项目负责人、系统管理员可对正式生效的项目进行编辑，修改项目信息。<span></span> \r\n	</p>\r\n	<p style="margin-left:14.0pt;text-indent:28.0pt;">\r\n		（<span>2</span>）修改后仍然要执行“项目创建”的整个流程。<span></span> \r\n	</p>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.1.3 </span>项目删除<span></span> \r\n	</h3>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>1</span>）只有系统管理员可以删除项目。（目前似乎“项目负责人”的权限都可以删除，需要修改）；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>2</span>）系统管理员提出“删除项目”时必须向“项目主管”（后台指定人员）、提出申请；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>3</span>）“项目主管”审核通过后向所长提出申请；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>4</span>）所长审核通过，通知系统管理员删除项目。<span></span> \r\n	</p>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.1.4 </span>项目查询<span></span> \r\n	</h3>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（1）</span>按照在项目中的角色进行查询<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		我参与的项目：是项目组成员，但不是负责的未完成项目；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		我负责的项目：担任项目组负责人的未完成项目；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		所有项目：全所所有未完成项目；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		归档项目：所有状态是已完成的项目转为“归档项目”。<span></span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（2）</span>按照项目类型查询<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		（项目类型可在后台设定。）<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		合同性：项目类型为“合同性”的项目；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		指令性：项目类型为“指令性”的项目；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		临时性：项目类型为“临时性”的项目。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		在返回查询结果时，在查结果显示页面最上方首先显示统计信息，如：合同性项目<span>XX</span>项；指令性项目<span>XX</span>项；临时性项目：<span>XX</span>项。<span></span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（3）</span>按照项目人员所在部门查询<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		（所下面细分的各个部门、所里每个人员所属的部门可在后台进行设定。）<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		<span>XX</span>部门项目：分为主办项目、协办项目。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		——主办项目：项目负责人属于该部门；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		——协办项目：项目负责人不属于该部门，项目参加人员属于该部门。<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		在返回查询结果时，在查结果显示页面最上方首先显示统计信息，如：<span>XX</span>部门主办项目<span>XX</span>项；协办项目<span>XX</span>项。<span></span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（4）</span>辅助查询条件<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		辅助查询条件可以与上述集中查询组合使用，一般包括：<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		——按时间段查询：在下拉列表框中选择起止时间<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		——按名称查询：包含某些关键字<span></span> \r\n	</p>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.2 </span>任务管理<span></span> \r\n	</h2>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.2.1 </span>任务创建<span></span> \r\n	</h3>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>1</span>）项目正式生效后，可由项目负责人创建任务，指定任务的执行者；<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		（<span>2</span>）任务执行者接到任务后，还可以进一步分解子任务。<span></span> \r\n	</p>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.2.2 </span>任务修改<span></span> \r\n	</h3>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.2.3 </span>任务删除<span></span> \r\n	</h3>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.2.4 </span>任务查询<span></span> \r\n	</h3>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.3 </span>日志管理<span></span> \r\n	</h2>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.3.1 </span>填报日志<span></span> \r\n	</h3>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.3.2 </span>修改日志<span></span> \r\n	</h3>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.3.3 </span>删除日志<span></span> \r\n	</h3>\r\n	<h3 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.3.4 </span>查询日志<span></span> \r\n	</h3>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.4 </span>统计分析<span></span> \r\n	</h2>\r\n	<p style="text-indent:28.0pt;">\r\n		<span>&nbsp;</span> \r\n	</p>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.5 </span>后台管理<span></span> \r\n	</h2>\r\n	<p style="text-indent:28.0pt;">\r\n		<span>&nbsp;</span> \r\n	</p>\r\n	<h2 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>3.6 </span>辅助功能<span></span> \r\n	</h2>\r\n	<p style="text-indent:28.0pt;">\r\n		<span>&nbsp;</span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（1）</span>数据备份<span></span> \r\n	</h4>\r\n	<p style="text-indent:9.95pt;">\r\n		定期自动备份数据：定期保存数据库到硬盘<span></span> \r\n	</p>\r\n	<p style="text-indent:9.95pt;">\r\n		异地备份<span></span> \r\n	</p>\r\n	<p style="text-indent:9.95pt;">\r\n		手动备份：系统管理员可以手动保存数据<span></span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（2）</span>数据导入导出：按指定格式<span>excel</span>导入<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		项目导入<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		日志批量导入<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		人员导入<span></span> \r\n	</p>\r\n	<h4 style="margin-left:0cm;text-indent:0cm;">\r\n		<span>（3）</span>通知功能<span></span> \r\n	</h4>\r\n	<p style="text-indent:28.0pt;">\r\n		——邮件通知：外部邮件通知<span></span> \r\n	</p>\r\n	<p style="text-indent:28.0pt;">\r\n		——问题反馈功能（类似于：<a href="http://www.wssys.net/zh-CN/feedback.php">http://www.wssys.net/zh-CN/feedback.php</a>），用于收集用户在使用过程中的问题反馈。<span></span> \r\n	</p>\r\n</div>\r\n<p style="text-indent:28.0pt;">\r\n	<br />\r\n</p>', 24, '', '', '', '2015-12-08', '2015-12-30', '', 51, 4, '', '2015-12-08 05:14:22', '重要', '综合所', 2, '48', '51', '49', '50', '51', '1,47,46,45'),
+(88, '测试审批1', '', '', 22, '', '', '', '2015-12-08', '2015-12-15', '', 45, 2, '', '2015-12-08 09:02:53', '一般', '夹', 1, '48', '45', '49', '50', '51', '50,1,48,45'),
+(89, 'asdfasdf', '', '', 22, '', '', '', '2015-12-08', '2015-12-15', '', 45, 2, '', '2015-12-08 09:04:51', '一般', 'asdfads', 1, '48', '45', '49', '50', '51', '45,50'),
+(90, 'asdfasdf1', '', '', 22, '', '', '', '2015-12-08', '2015-12-15', '', 45, 2, '', '2015-12-08 09:07:00', '一般', 'asdfads', 1, '48', '45', '49', '50', '51', '45,50');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_project_sub`
+-- Table structure for table `tk_project_sub`
 --
 
+DROP TABLE IF EXISTS `tk_project_sub`;
 CREATE TABLE `tk_project_sub` (
   `id` bigint(6) UNSIGNED ZEROFILL NOT NULL,
   `project_pid` text,
@@ -1905,7 +1973,7 @@ CREATE TABLE `tk_project_sub` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_project_sub`
+-- Dumping data for table `tk_project_sub`
 --
 
 INSERT INTO `tk_project_sub` (`id`, `project_pid`, `project_name`, `project_code`, `project_text`, `project_type`, `project_from`, `project_from_user`, `project_from_contact`, `project_start`, `project_end`, `project_to_dept`, `project_to_user`, `project_status`, `project_remark`, `project_lastupdate`, `project_sub_backup1`, `project_sub_backup2`) VALUES
@@ -1914,9 +1982,10 @@ INSERT INTO `tk_project_sub` (`id`, `project_pid`, `project_name`, `project_code
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_project_type`
+-- Table structure for table `tk_project_type`
 --
 
+DROP TABLE IF EXISTS `tk_project_type`;
 CREATE TABLE `tk_project_type` (
   `ptid` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
   `project_type_name` varchar(60) DEFAULT NULL,
@@ -1925,7 +1994,7 @@ CREATE TABLE `tk_project_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_project_type`
+-- Dumping data for table `tk_project_type`
 --
 
 INSERT INTO `tk_project_type` (`ptid`, `project_type_name`, `tk_project_typerank`, `project_type_backup1`) VALUES
@@ -1936,9 +2005,10 @@ INSERT INTO `tk_project_type` (`ptid`, `project_type_name`, `tk_project_typerank
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_status`
+-- Table structure for table `tk_status`
 --
 
+DROP TABLE IF EXISTS `tk_status`;
 CREATE TABLE `tk_status` (
   `id` smallint(4) UNSIGNED NOT NULL,
   `task_status` varchar(60) NOT NULL,
@@ -1948,7 +2018,7 @@ CREATE TABLE `tk_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_status`
+-- Dumping data for table `tk_status`
 --
 
 INSERT INTO `tk_status` (`id`, `task_status`, `task_status_display`, `task_status_backup1`, `task_status_backup2`) VALUES
@@ -1969,9 +2039,10 @@ INSERT INTO `tk_status` (`id`, `task_status`, `task_status_display`, `task_statu
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_status_project`
+-- Table structure for table `tk_status_project`
 --
 
+DROP TABLE IF EXISTS `tk_status_project`;
 CREATE TABLE `tk_status_project` (
   `psid` smallint(4) UNSIGNED NOT NULL,
   `task_status` varchar(60) NOT NULL,
@@ -1980,7 +2051,7 @@ CREATE TABLE `tk_status_project` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_status_project`
+-- Dumping data for table `tk_status_project`
 --
 
 INSERT INTO `tk_status_project` (`psid`, `task_status`, `task_status_display`, `task_status_pbackup1`) VALUES
@@ -1999,9 +2070,10 @@ INSERT INTO `tk_status_project` (`psid`, `task_status`, `task_status_display`, `
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_task`
+-- Table structure for table `tk_task`
 --
 
+DROP TABLE IF EXISTS `tk_task`;
 CREATE TABLE `tk_task` (
   `TID` bigint(20) UNSIGNED NOT NULL,
   `csa_from_dept` mediumint(6) NOT NULL DEFAULT '0',
@@ -2037,25 +2109,28 @@ CREATE TABLE `tk_task` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_task`
+-- Dumping data for table `tk_task`
 --
 
 INSERT INTO `tk_task` (`TID`, `csa_from_dept`, `csa_from_user`, `csa_to_dept`, `csa_to_user`, `csa_year`, `csa_month`, `csa_project`, `csa_project_sub`, `csa_type`, `csa_text`, `csa_priority`, `csa_temp`, `csa_plan_st`, `csa_plan_et`, `csa_plan_hour`, `csa_remark1`, `csa_remark2`, `csa_remark3`, `csa_remark4`, `csa_remark5`, `csa_remark6`, `csa_remark7`, `csa_remark8`, `test01`, `test02`, `test03`, `test04`, `csa_create_user`, `csa_last_user`, `csa_last_update`) VALUES
-(197, 0, 1, 0, 46, 0, 0, 86, 0, 20, 'task1 to 李四', 3, 3, '2015-12-04', '2015-12-05', 0.0, 'fasdfasdfasdfasdfasfasdfasdf', 2, '2015-12-07 00:49:23', -1, '>>-1', -1, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 1, 46, '2015-12-06 23:49:34'),
+(197, 0, 1, 0, 46, 0, 0, 86, 0, 20, 'task1 to 李四', 3, 3, '2015-12-04', '2015-12-05', 0.0, 'fasdfasdfasdfasdfasfasdfasdf', 25, '2015-12-07 00:49:23', -1, '>>-1', -1, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 1, 1, '2015-12-08 05:24:01'),
 (198, 0, 1, 0, 1, 0, 0, 86, 0, 2, 'task 2 to admin', 5, 3, '2015-12-04', '2015-12-18', 48.0, 'asdfasfasdfasdfasdasdfa', 23, '2015-12-06 11:54:10', -1, '>>-1', -1, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 1, 1, '2015-12-06 10:54:14'),
 (199, 0, 1, 0, 1, 0, 0, 86, 0, 1, 'task1的子任务1', 5, 3, '2015-12-06', '2015-12-10', 48.0, '<span style="color:#737373;font-family:Arial;line-height:17.1429px;background-color:#FFFFFF;">您可以将该任务抄送给多个人，当任务创建、状态更新、以及完成时，他们会收到站内消息通知</span>', 4, '0000-00-00 00:00:00', 197, '197>2', 2, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '地铁', '', '', 1, 1, '2015-12-06 07:11:50'),
 (200, 0, 1, 0, 1, 0, 0, 86, 0, 2, 'task2 子任务1', 4, 3, '2015-12-26', '2016-01-30', 100.0, '<span style="color:#737373;font-family:Arial;line-height:17.1429px;background-color:#FFFFFF;">该任务抄送给多个人，当任务创建、状态更新、以及完成时，他们会收到站内消息通知</span>', 2, '2015-12-06 13:14:15', 198, '198>2', 2, '', NULL, '[{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '道路 桥梁', '', '', 1, 1, '2015-12-06 12:14:19'),
 (201, 0, 1, 0, 1, 0, 0, 86, 0, 7, 'task1 子任务2', 1, 3, '2015-12-01', '2015-12-03', 48.0, '<div style="color:#333333;font-family:Arial;background-color:#FFFFFF;">\r\n	<span style="color:#737373;">您可以将该任务抄送给多个人，当任务创建、状态更新、以及完成时，他们会收到站内消息通知</span>\r\n	<div>\r\n		<br />\r\n	</div>\r\n</div>\r\n<div style="color:#333333;font-family:Arial;background-color:#FFFFFF;">\r\n	<span style="color:#737373;">您可以将该任务抄送给多个人，当任务创建、状态更新、以及完成时，他们会收到站内消息通知</span>\r\n	<div>\r\n		<br />\r\n	</div>\r\n</div>\r\n<div style="color:#333333;font-family:Arial;background-color:#FFFFFF;">\r\n	<span style="color:#737373;">您可以将该任务抄送给多个人，当任务创建、状态更新、以及完成时，他们会收到站内消息通知</span>\r\n	<div>\r\n		<br />\r\n	</div>\r\n</div>', 24, '0000-00-00 00:00:00', 197, '197>2', 2, '', NULL, NULL, '桥梁', '', '', 1, 1, '2015-12-06 07:15:00'),
 (202, 0, 46, 0, 1, 0, 0, 86, 0, 8, 'task1 的子任务的子任务一', 3, 3, '2015-12-06', '2015-12-20', 48.0, '<span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">、状态更新、以及完成</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">任务审核人，任务状态更新或完成时，会收到通知</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">任务审核人，任务状态更新或完成时，会收到通知</span>', 2, '2015-12-06 13:16:26', 199, '197>2>199>3', 3, '', NULL, NULL, '桥梁', '', '', 1, 1, '2015-12-06 12:16:29'),
 (203, 0, 1, 0, 46, 0, 0, 86, 0, 12, 'task 3 not to admin', 3, 3, '2015-11-20', '2015-11-26', 76.0, '<span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span><span style="color:#737373;font-family:Arial;font-size:13.3333px;line-height:19.0476px;background-color:#FFFFFF;">状态更新、以及完成时，他们会</span>', 2, '0000-00-00 00:00:00', -1, '>>-1', -1, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 1, 1, '2015-12-06 07:20:38'),
-(204, 0, 46, 0, 1, 0, 0, 86, 0, 10, 'asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfad', 3, 3, '2015-12-11', '2015-12-19', 33.0, '<p>\r\n	asfasdfasfsdfasdfasdfasfsdasdfad\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	as\r\n</p>\r\n<p>\r\n	dfasdf\r\n</p>\r\n<p>\r\n	asdf\r\n</p>\r\n<p>\r\n	as\r\n</p>\r\n<p>\r\n	df&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	&nbsp;safdfasd\r\n</p>', 2, '0000-00-00 00:00:00', 197, '197>2', 2, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 46, 46, '2015-12-07 00:14:06');
+(204, 0, 46, 0, 1, 0, 0, 86, 0, 10, 'asdfasdf                asdfsfasdfasdf                 asfasdfasdfasf   adfasfad', 3, 3, '2015-12-11', '2015-12-19', 33.0, '<p>\r\n	asfasdfasfsdfasdfasdfasfsdasdfad\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	as\r\n</p>\r\n<p>\r\n	dfasdf\r\n</p>\r\n<p>\r\n	asdf\r\n</p>\r\n<p>\r\n	as\r\n</p>\r\n<p>\r\n	df&nbsp;\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n	&nbsp;safdfasd\r\n</p>', 2, '0000-00-00 00:00:00', 197, '197>2', 2, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"45", "uname":"\\u5f20\\u4e09" }]', '', '', '', 46, 46, '2015-12-07 00:14:06'),
+(205, 0, 1, 0, 1, 0, 0, 87, 0, 20, '程序开发', 3, 3, '2015-12-08', '2015-12-25', 300.0, '程序开发工作', 5, '0000-00-00 00:00:00', -1, '>>-1', -1, '', NULL, '[{"uid":"1", "uname":"Admin" },{"uid":"47", "uname":"\\u529e\\u4e8b\\u5458" },{"uid":"46", "uname":"\\u674e\\u56db" },{"uid":"50", "uname":"\\u6240\\u957f" },{"uid":"48", "uname":"\\u9662\\u957f" },{"uid":"45", "uname":"\\u5f20\\u4e09" },{"uid":"51", "uname":"\\u4e3b\\u4efb\\u5de5\\u7a0b\\u5e08" },{"uid":"49", "uname":"\\u603b\\u5de5" }]', '', '', '', 1, 1, '2015-12-08 02:26:05'),
+(206, 0, 1, 0, 1, 0, 0, 87, 0, 20, '数据维护', 3, 3, '2015-12-08', '2016-01-30', 500.0, '数据备份与维护', 2, '0000-00-00 00:00:00', -1, '>>-1', -1, '', NULL, NULL, '', '', '', 1, 1, '2015-12-08 02:26:53');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_task_byday`
+-- Table structure for table `tk_task_byday`
 --
 
+DROP TABLE IF EXISTS `tk_task_byday`;
 CREATE TABLE `tk_task_byday` (
   `tbid` bigint(20) UNSIGNED NOT NULL,
   `csa_tb_year` varchar(20) NOT NULL,
@@ -2071,7 +2146,7 @@ CREATE TABLE `tk_task_byday` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_task_byday`
+-- Dumping data for table `tk_task_byday`
 --
 
 INSERT INTO `tk_task_byday` (`tbid`, `csa_tb_year`, `csa_tb_status`, `csa_tb_manhour`, `csa_tb_text`, `csa_tb_comment`, `csa_tb_lastupdate`, `csa_tb_backup1`, `csa_tb_backup2`, `csa_tb_backup3`, `csa_tb_backup4`) VALUES
@@ -2424,9 +2499,10 @@ INSERT INTO `tk_task_byday` (`tbid`, `csa_tb_year`, `csa_tb_status`, `csa_tb_man
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_task_tpye`
+-- Table structure for table `tk_task_tpye`
 --
 
+DROP TABLE IF EXISTS `tk_task_tpye`;
 CREATE TABLE `tk_task_tpye` (
   `id` smallint(4) UNSIGNED NOT NULL,
   `task_tpye` varchar(60) NOT NULL,
@@ -2435,7 +2511,7 @@ CREATE TABLE `tk_task_tpye` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_task_tpye`
+-- Dumping data for table `tk_task_tpye`
 --
 
 INSERT INTO `tk_task_tpye` (`id`, `task_tpye`, `tk_task_typerank`, `task_tpye_backup1`) VALUES
@@ -2456,9 +2532,10 @@ INSERT INTO `tk_task_tpye` (`id`, `task_tpye`, `tk_task_typerank`, `task_tpye_ba
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_team`
+-- Table structure for table `tk_team`
 --
 
+DROP TABLE IF EXISTS `tk_team`;
 CREATE TABLE `tk_team` (
   `id` int(11) UNSIGNED ZEROFILL NOT NULL,
   `tk_team_name` varchar(50) DEFAULT NULL,
@@ -2466,7 +2543,7 @@ CREATE TABLE `tk_team` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_team`
+-- Dumping data for table `tk_team`
 --
 
 INSERT INTO `tk_team` (`id`, `tk_team_name`, `tk_team_order`) VALUES
@@ -2478,9 +2555,10 @@ INSERT INTO `tk_team` (`id`, `tk_team_name`, `tk_team_order`) VALUES
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_user`
+-- Table structure for table `tk_user`
 --
 
+DROP TABLE IF EXISTS `tk_user`;
 CREATE TABLE `tk_user` (
   `uid` bigint(20) UNSIGNED NOT NULL,
   `tk_user_login` varchar(60) NOT NULL DEFAULT '',
@@ -2503,22 +2581,26 @@ CREATE TABLE `tk_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_user`
+-- Dumping data for table `tk_user`
 --
 
 INSERT INTO `tk_user` (`uid`, `tk_user_login`, `tk_user_pass`, `tk_user_token`, `tk_display_name`, `tk_team`, `tk_user_role`, `pid`, `tk_user_status`, `tk_user_registered`, `tk_user_remark`, `tk_user_rank`, `tk_user_contact`, `tk_user_email`, `tk_user_message`, `tk_user_lastuse`, `tk_user_backup1`, `tk_pinyin`) VALUES
-(1, 'admin', 'a6ec5a7b854d204b74cd90a8306a957e', '0', 'Admin', 0, 0, 1, 'asdfasf', '2015-12-08 23:54:17', '', 5, '', '', 676, '{"0":{"uid":"46","uname":""},"2":{"uid":"46","uname":"\\u674e\\u56db"},"3":{"uid":"1","uname":"Admin"},"4":{"uid":"1","uname":""}}', '', NULL),
+(1, 'admin', 'a6ec5a7b854d204b74cd90a8306a957e', '0', 'Admin', 0, 0, 1, 'asdfasf', '2015-12-08 02:26:53', '', 5, '', '', 676, '{"0":{"uid":"1","uname":"Admin"},"2":{"uid":"46","uname":""},"3":{"uid":"46","uname":"\\u674e\\u56db"},"4":{"uid":"1","uname":""}}', '', NULL),
 (45, 'test1', '4e39d6aaa157a087af755cfa6e05062e', '0', '张三', 0, 0, 0, '', '2015-12-04 11:08:45', '', 4, '12345678', '', 0, NULL, '', NULL),
 (46, 'lisi', 'd6fde252a6b164a42958c1a8c7c674d6', '0', '李四', 0, 0, 0, '', '2015-12-07 00:14:06', '', 3, '', '', 661, '[{"uid":"1", "uname":"Admin" }]', '', NULL),
 (47, 'banshiyuan', 'ff8b78934a1d53ac078657da6d0af2da', '0', '办事员', 8, 5, 0, '', '2015-12-08 22:44:49', 'sdfasdfasdf1', 3, '13321111111', 'sdfasdf@asdfasd.com1', 0, NULL, '', NULL),
-(48, 'yuanzhang', 'ff8b78934a1d53ac078657da6d0af2da', '0', '院长', 5, 1, 0, '', '2015-12-08 23:37:58', '', 2, '', '', 0, NULL, '', NULL);
+(48, 'yuanzhang', 'ff8b78934a1d53ac078657da6d0af2da', '0', '院长', 5, 1, 0, '', '2015-12-08 23:37:58', '', 2, '', '', 0, NULL, '', NULL),
+(49, 'zonggong', 'ff8b78934a1d53ac078657da6d0af2da', '0', '总工', 1, 2, 0, '', '2015-12-08 01:53:43', '', 3, '', '', 0, NULL, '', NULL),
+(50, 'suozhang', 'ff8b78934a1d53ac078657da6d0af2da', '0', '所长', 4, 3, 0, '', '2015-12-08 01:54:20', '', 3, '', '', 0, NULL, '', NULL),
+(51, 'zhuren', 'ff8b78934a1d53ac078657da6d0af2da', '0', '主任工程师', 4, 4, 0, '', '2015-12-08 01:55:07', '', 3, '', '', 0, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `tk_user_role`
+-- Table structure for table `tk_user_role`
 --
 
+DROP TABLE IF EXISTS `tk_user_role`;
 CREATE TABLE `tk_user_role` (
   `id` int(11) NOT NULL,
   `tk_role_name` varchar(50) NOT NULL,
@@ -2526,7 +2608,7 @@ CREATE TABLE `tk_user_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 转存表中的数据 `tk_user_role`
+-- Dumping data for table `tk_user_role`
 --
 
 INSERT INTO `tk_user_role` (`id`, `tk_role_name`, `tk_role_order`) VALUES
@@ -2546,6 +2628,12 @@ INSERT INTO `tk_user_role` (`id`, `tk_role_name`, `tk_role_order`) VALUES
 --
 ALTER TABLE `tk_announcement`
   ADD PRIMARY KEY (`AID`);
+
+--
+-- Indexes for table `tk_approval`
+--
+ALTER TABLE `tk_approval`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tk_bug`
@@ -2725,6 +2813,11 @@ ALTER TABLE `tk_user_role`
 ALTER TABLE `tk_announcement`
   MODIFY `AID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `tk_approval`
+--
+ALTER TABLE `tk_approval`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `tk_bug`
 --
 ALTER TABLE `tk_bug`
@@ -2738,7 +2831,7 @@ ALTER TABLE `tk_comment`
 -- AUTO_INCREMENT for table `tk_document`
 --
 ALTER TABLE `tk_document`
-  MODIFY `docid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `docid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `tk_item`
 --
@@ -2783,7 +2876,7 @@ ALTER TABLE `tk_kpi`
 -- AUTO_INCREMENT for table `tk_log`
 --
 ALTER TABLE `tk_log`
-  MODIFY `logid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=855;
+  MODIFY `logid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=861;
 --
 -- AUTO_INCREMENT for table `tk_manhour`
 --
@@ -2798,7 +2891,7 @@ ALTER TABLE `tk_menu`
 -- AUTO_INCREMENT for table `tk_message`
 --
 ALTER TABLE `tk_message`
-  MODIFY `meid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=678;
+  MODIFY `meid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=688;
 --
 -- AUTO_INCREMENT for table `tk_mul`
 --
@@ -2808,7 +2901,7 @@ ALTER TABLE `tk_mul`
 -- AUTO_INCREMENT for table `tk_project`
 --
 ALTER TABLE `tk_project`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 --
 -- AUTO_INCREMENT for table `tk_project_sub`
 --
@@ -2828,7 +2921,7 @@ ALTER TABLE `tk_status_project`
 -- AUTO_INCREMENT for table `tk_task`
 --
 ALTER TABLE `tk_task`
-  MODIFY `TID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `TID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 --
 -- AUTO_INCREMENT for table `tk_task_byday`
 --
@@ -2848,7 +2941,7 @@ ALTER TABLE `tk_team`
 -- AUTO_INCREMENT for table `tk_user`
 --
 ALTER TABLE `tk_user`
-  MODIFY `uid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `uid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `tk_user_role`
 --
