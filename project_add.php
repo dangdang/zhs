@@ -146,7 +146,7 @@ window.onload = function()
 function option_gourl(str)
 {
 if(str == '-1')window.open('user_add.php');
-if(str == '-2')window.open('project_status.php');
+if(str == '-2')window.open('project_type_list.php');
 }
 
 

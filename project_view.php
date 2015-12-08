@@ -124,6 +124,7 @@ $sql=sprintf("SELECT * , sum(csa_tb_manhour) as summ1 FROM tk_task_byday
 $query = mysql_query($sql, $tankdb) or die(mysql_error());
 
 //获取各子项目工时
+$dis=Array();
 while($row=mysql_fetch_assoc($query)){
     $dis[]=array("name"=>$row['task_tpye'],"value"=>$row['summ1']);
 }
@@ -525,7 +526,6 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
                 </table>
               </td>
 		  </tr>
-//下发任务、新建文件夹、新建文档等功能
 		  <tr>
             <td>
 			<table width="100%"  style="line-height:40px;">
@@ -573,7 +573,7 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
             <td><span class="font_big18 fontbold"><?php echo $multilingual_project_description; ?></span></td>
           </tr>
           <tr>
-            <td><?php echo $row_DetailRS1['project_text']; ?></td>
+            <td><?php echo substr($row_DetailRS1['project_text'],0,2000); ?></td>
           </tr>
 		  <?php } // Show if recordset not empty ?>
 		  <?php if ($row_DetailRS1['project_from_contact'] <> "" && $row_DetailRS1['project_from_contact'] <> " ") { // Show if recordset not empty ?>

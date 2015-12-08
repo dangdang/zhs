@@ -149,10 +149,7 @@ window.onload = function()
       <td width="15%"><a href="project_type_edit.php?editID=<?php echo $row_Recordset1['id']; ?>"><?php echo $multilingual_global_action_edit; ?></a></td> <!--todo:增加编辑页面-->
       <td width="15%">
 	  <?php if ($totalRows_Recordset1 > 1  && $_SESSION['MM_Username'] <> $multilingual_dd_user_readonly) { // Show if recordset not empty ?>
-	  <a href="#" 
-	  onclick="javascript:if(confirm( '<?php 
-	  echo $multilingual_global_action_delconfirm6; ?>'))self.location='project_type_del.php?delID=<?php echo $row_Recordset1['id']; ?>';" <!--todo:增加project_type_del.php-->
-	  ><?php echo $multilingual_global_action_del; ?></a>
+	  <a href="#" onclick="javascript:if(confirm( '<?php echo $multilingual_global_action_delconfirm6; ?>'))self.location='project_type_del.php?delID=<?php echo $row_Recordset1['id']; ?>';" ><?php echo $multilingual_global_action_del; ?></a>
 	  <?php } else { // Show if recordset not empty ?> 
 
 <?php echo $multilingual_global_action_del; ?>
