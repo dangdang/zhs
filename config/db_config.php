@@ -22,4 +22,11 @@ $a_approval_type=array(
 		
 );
 
+$a_approval_state=array(
+		"-1"=>"退回",
+		"0"=>"等待审批",
+		"1"=>"通过"
+		
+);
+
 ?>

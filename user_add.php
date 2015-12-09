@@ -85,8 +85,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     <script type="text/javascript" src="srcipt/lhgcheck.js"></script>
 <script type="text/javascript">
 J.check.rules = [
-    { name: 'tk_user_login', mid: 'user_login', type: 'limit|alpha', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>|<?php echo $multilingual_user_alpha; ?>' },
-	{ name: 'tk_user_pass', mid: 'user_pass', type: 'limit', requir: true, min: 2, max: 8, warn: '<?php echo $multilingual_user_namequired8; ?>' },
+    { name: 'tk_user_login', mid: 'user_login', type: 'limit|alpha', requir: true, min: 2, max: 20, warn: '<?php echo $multilingual_user_namequired; ?>|<?php echo $multilingual_user_alpha; ?>' },
+	{ name: 'tk_user_pass', mid: 'user_pass', type: 'limit', requir: true, min: 2, max: 20, warn: '<?php echo $multilingual_user_namequired8; ?>' },
 	{ name: 'tk_display_name', mid: 'display_name', type: 'limit', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>' },
 	{ name: 'tk_user_pass', mid: 'user_pass2', requir: true, type: 'match', to: 'tk_user_pass2', warn: '<?php echo $multilingual_user_tip_match; ?>' },
 	{ name: 'tk_user_team', mid: 'user_team', type: 'limit', requir: true, min: 1, max: 11, warn: '请选择用户部门' },

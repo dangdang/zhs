@@ -386,7 +386,7 @@ document.getElementById('tab_' + i).className = (i == ".$tabid.") ? 'onhover' : 
 <script language="javascript">
 function tabs(n)
 {
-var len = 3;
+var len = 4;
 for (var i = 1; i <= len; i++)
 {
 document.getElementById('tab_a' + i).style.display = (i == n) ? 'block' : 'none';
@@ -475,6 +475,7 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
                 for($index=0;$index<$num;$index++)
                 {?><a href="user_view.php?recordID=<?php echo trim($userArr[$index]); ?>"><?php echo $userNameArray[trim($userArr[$index])];if ($num>1 and $index<($num-1)){echo ",";}; ?></a>&nbsp;
                 <?php } ?>
+                  
 		</td>
 		<!--项目组成员-->
 		<td class="info_task_title">项目组成员</td>
@@ -488,7 +489,13 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
       </table>
               </td>
 		  </tr>
-		  <tr style="height:5px"></tr>
+		  <tr style="height:5px">
+		  </tr>
+		  <tr>
+		  <td>
+		  
+		  </td>
+		  </tr>
 		  <!--增加项目状态等-->
           <tr>
               <td>
@@ -805,7 +812,7 @@ echo $editcomment_row;
 <a href="javascript:void(0)" onClick="tabs('3');" >
 <?php echo $multilingual_project_view_log; ?></a></li>
 
-
+<li id="tab_4"><a href="javascript:void(0)" onClick="tabs('4');" >审批记录</a></li>
 
 
 <?php if ($totalRows_Recordset_file <> 0 ||  $totalRows_Recordset_task <> 0) { ?>
@@ -1236,6 +1243,53 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
 <?php }  ?>
 </div>
 <!-- log end-->
+<!-- approve start -->	
+<div class="tab_b" id="tab_a4" style='display:none'>
+
+  <table><tr></tr><tr></tr></table>
+  <table width="100%">
+  <tr>
+    <td colspan="2">
+
+    <table class="table table-striped table-hover glink">
+<thead >
+        
+        <tr>
+          <th>类别</th>
+          <th>主题</th>
+          <th>申请人</th>
+          <th>申请时间</th>
+          <th>接收人</th>
+          <th>状态</th>
+          <th>更新时间</th>
+          
+        </tr>
+        </thead>
+        <tbody>
+        <?php 
+        $r=mysql_query("select * from tk_approval");
+        while($a=mysql_fetch_assoc($r)){
+        ?>
+          <tr>
+            <td><?php echo $a_approval_type[$a['type']]; ?></td>
+            <td><?php echo $a['subject']; ?></td>
+            <td><?php echo get_user($a['sender'],"tk_display_name"); ?></td>
+            <td><?php echo $a['create_date']; ?></td>
+            <td><?php echo get_user($a['receiver'],"tk_display_name"); ?></td>
+            <td><?php echo $a_approval_state[$a['state']]; ?></td>
+            <td><?php echo $a['update_date']; ?></td>
+            </tr>
+		<?php }?>
+		  </tbody>
+      </table>
+
+     
+     </td>
+</tr>
+</table>
+</div>
+<!-- approve end -->	
+
 			<!-- tab end -->			
                 </td>
           </tr>

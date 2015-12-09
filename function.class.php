@@ -268,24 +268,25 @@ return $str;
 }
 
 //get userinfo
-function get_user($userid, $channel ="default"){
-global $tankdb;
-global $database_tankdb;
-
-$query_touser =  sprintf("SELECT * FROM tk_user WHERE uid = %s",
-                       GetSQLValueString($userid, "int"));  
-$touser = mysql_query($query_touser, $tankdb) or die(mysql_error());
-$row_touser = mysql_fetch_assoc($touser);
-
-$userinfo->name = $row_touser["tk_display_name"];
-$userinfo->email = $row_touser["tk_user_email"];
-    if($channel == "infopage"){
-      $userinfo->remark = $row_touser["tk_user_remark"];
-        //$userinfo->rank = $row_touser["tk_user_rank"];  
-      $userinfo->phone = $row_touser["tk_user_contact"];  
-    }
-
-return $userinfo;
+function get_user($userid, $channel =""){
+	global $tankdb;
+	
+	$query_touser =  sprintf("SELECT * FROM tk_user WHERE uid = %s",
+	                       GetSQLValueString($userid, "int"));  
+	$touser = mysql_query($query_touser, $tankdb) or die(mysql_error());
+	$row_touser = mysql_fetch_assoc($touser);
+	
+	if($channel==""){
+		$userinfo = new stdClass();
+		$userinfo->name = $row_touser["tk_display_name"];
+		$userinfo->email = $row_touser["tk_user_email"];
+		$userinfo->remark = $row_touser["tk_user_remark"];   
+		$userinfo->phone = $row_touser["tk_user_contact"];
+		
+		return $userinfo;
+	}else{
+		return $row_touser[$channel];
+	}
 }
 
 //post office
