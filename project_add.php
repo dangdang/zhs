@@ -70,7 +70,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
         GetSQLValueString($_POST['project_importance'], "text"));
 
 
-    mysql_select_db($database_tankdb, $tankdb);
+    
     $Result1 = mysql_query($insertSQL, $tankdb) or die(mysql_error());
     $newID = mysql_insert_id();
     $insertGoTo = "project_view.php?recordID=$newID";
@@ -84,15 +84,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 $user_arr = get_user_select();
 
 //获取tk_status数据库设定好的值
-mysql_select_db($database_tankdb, $tankdb);
+
 $query_Recordset3 = "SELECT * FROM tk_status_project ORDER BY task_status_pbackup1 ASC";
 $Recordset3 = mysql_query($query_Recordset3, $tankdb) or die(mysql_error());
 $row_Recordset3 = mysql_fetch_assoc($Recordset3);
 $totalRows_Recordset3 = mysql_num_rows($Recordset3);
 
 //获取tk_project_type数据库设定好的值
-mysql_select_db($database_tankdb, $tankdb);
-$query_RS_projet_type = "SELECT * FROM tk_project_type ORDER BY project_type_backup1 ASC";
+
+$query_RS_projet_type = "SELECT * FROM tk_project_type ORDER BY project_type_backup1";
 $Recordset_project_type = mysql_query($query_RS_projet_type, $tankdb) or die(mysql_error());
 $row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type);
 $totalRows_Recordset_project_type = mysql_num_rows($Recordset_project_type);
@@ -470,7 +470,7 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                               <label for="project_manager" ><?php echo $multilingual_project_touser; ?><span id="csa_to_user_msg" ></span></label>
                                  <div>
                                     <select id="project_manager"   name="project_manager" multiple="multiple"> <!--style="width:100%;overflow:hidden;"-->  //class="form-control">
-	                                  <?php foreach($user_arr as $key => $val){ ?>
+	                                  <?php foreach(get_user_select() as $key => $val){ ?>
                                           <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                       <?php } ?>
 									<!--todo:如果是管理员？可以创建新的人员,需增加代码，新建用户-->
@@ -489,8 +489,8 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                              <div class="form-group  col-xs-12" >
                               <label for="project_dean" >项目主管院长<span id="project_dean_msg" ></span></label>
                                  <div>
-                                    <select name="project_dean" id="project_dean" multiple="multiple"  >  //class="form-control">
-	                                    <?php foreach($user_arr as $key => $val){ ?>
+                                    <select name="project_dean" id="project_dean" multiple="multiple"  > 
+	                                    <?php foreach(get_user_select(10) as $key => $val){ ?>
                                             <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                         <?php } ?>
 	                                 </select>
@@ -504,7 +504,7 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                               <label for="project_chief_engineer" >项目主管总工<span id="project_chief_engineer_msg" ></span></label>
                                  <div>
                                     <select name="project_chief_engineer" id="project_chief_engineer"  multiple="multiple">
-	                                        <?php foreach($user_arr as $key => $val){ ?>
+	                                        <?php foreach(get_user_select(20) as $key => $val){ ?>
                                             <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                             <?php } ?>
 	                                  </select>
@@ -518,7 +518,7 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                               <label for="project_Director" >项目主管所长<span id="project_Director_msg" ></span></label>
                                  <div>
                                     <select name="project_Director" id="project_Director"  multiple="multiple">  //class="form-control">
-	                                    <?php foreach($user_arr as $key => $val){ ?>
+	                                    <?php foreach(get_user_select(30) as $key => $val){ ?>
                                         <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                         <?php } ?>
 	                                  </select>
@@ -532,7 +532,7 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
                               <label for="project_Division_engineer" >项目主管主任工程师<span id="project_Division_engineer_msg"  ></span></label>
                                  <div>
                                     <select name="project_Division_engineer"  id="project_Division_engineer"  multiple="multiple">  //class="form-control">
-	                                        <?php foreach($user_arr as $key => $val){ ?>
+	                                        <?php foreach(get_user_select(40) as $key => $val){ ?>
                                         <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                             <?php } ?>
 	                                  </select>
@@ -547,7 +547,7 @@ $("#selected_project_member").val(getMultiSelectValue('project_member'));*/
 								<label for="project_member" >项目组成员<span id="project_member_msg"></span></label>
                                     <div >
                                       <select name="project_member" id="project_member" multiple="multiple" >
-                                            <?php foreach ($user_arr as $key => $val) { ?>
+                                            <?php foreach (get_user_select() as $key => $val) { ?>
                                         <option value='<?php echo $val["uid"]?>'><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                         <?php } ?>
                                         </select>

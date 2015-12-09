@@ -60,10 +60,12 @@ $tk_user_remark = sprintf("%s,", GetSQLValueString(str_replace("%","%%",$_POST['
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO tk_user (tk_user_login, tk_user_pass, tk_display_name, tk_user_rank, tk_user_remark, tk_user_contact, tk_user_email, tk_user_backup1) VALUES (%s, %s, %s, %s, $tk_user_remark $tk_user_contact $tk_user_email '')",
+  $insertSQL = sprintf("INSERT INTO tk_user (tk_user_login, tk_user_pass, tk_display_name, tk_team,tk_user_role,tk_user_rank, 
+  		tk_user_remark, tk_user_contact,tk_user_email, tk_user_backup1) VALUES (%s, %s, %s,%s,%s, %s, $tk_user_remark $tk_user_contact $tk_user_email '')",
                        GetSQLValueString($_POST['tk_user_login'], "text"),
                        GetSQLValueString($tk_password, "text"),
                        GetSQLValueString($_POST['tk_display_name'], "text"),
+  						$_POST['tk_user_team'],$_POST['tk_user_role'],
                        GetSQLValueString($_POST['tk_user_rank'], "text"));
 
   mysql_select_db($database_tankdb, $tankdb);
@@ -86,7 +88,9 @@ J.check.rules = [
     { name: 'tk_user_login', mid: 'user_login', type: 'limit|alpha', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>|<?php echo $multilingual_user_alpha; ?>' },
 	{ name: 'tk_user_pass', mid: 'user_pass', type: 'limit', requir: true, min: 2, max: 8, warn: '<?php echo $multilingual_user_namequired8; ?>' },
 	{ name: 'tk_display_name', mid: 'display_name', type: 'limit', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>' },
-	{ name: 'tk_user_pass', mid: 'user_pass2', requir: true, type: 'match', to: 'tk_user_pass2', warn: '<?php echo $multilingual_user_tip_match; ?>' }
+	{ name: 'tk_user_pass', mid: 'user_pass2', requir: true, type: 'match', to: 'tk_user_pass2', warn: '<?php echo $multilingual_user_tip_match; ?>' },
+	{ name: 'tk_user_team', mid: 'user_team', type: 'limit', requir: true, min: 1, max: 11, warn: '请选择用户部门' },
+	{ name: 'tk_user_role', mid: 'user_role', type: 'limit', requir: true, min: 1, max: 11, warn: '请选择用户职务' }
 ];
 
 window.onload = function()
@@ -119,76 +123,84 @@ window.onload = function()
               <div class="form-group col-xs-12">
                 <label for="tk_user_login"><?php echo $multilingual_user_account; ?><span id="user_login" class="red">*</span></label>
                 <div>
-				<input type="text" name="tk_user_login" id="tk_user_login" value="" placeholder="<?php echo $multilingual_user_account;?>"  class="form-control" />
+				<input type="text" name="tk_user_login" id="tk_user_login" value="" placeholder="<?php echo $multilingual_user_tip_account;?>"  class="form-control" />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_account; ?></span>
               </div>
 
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_user_pass"><?php echo $multilingual_user_password; ?><span class="red" id="user_pass" >*</span></label>
                 <div>
-				<input type="password" name="tk_user_pass" id="tk_user_pass" value="" placeholder="<?php echo $multilingual_user_password;?>"  class="form-control" />
+				<input type="password" name="tk_user_pass" id="tk_user_pass" value="" placeholder="<?php echo $multilingual_user_tip_password;?>"  class="form-control" />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_password; ?></span>
               </div>
-
-
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_user_pass2"><?php echo $multilingual_user_password2; ?><span class="red" id="user_pass2" >*</span></label>
                 <div>
-				<input type="password" name="tk_user_pass2" id="tk_user_pass2" value="" placeholder="<?php echo $multilingual_user_password2;?>"  class="form-control"  />
+				<input type="password" name="tk_user_pass2" id="tk_user_pass2" value="" placeholder="<?php echo $multilingual_user_tip_password2;?>"  class="form-control"  />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_password2; ?></span>
               </div>
-
-
-
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_display_name"><?php echo $multilingual_user_name; ?><span id="display_name" class="red">*</span></label>
                 <div>
-				<input type="text" name="tk_display_name" id="tk_display_name" value="" placeholder="<?php echo $multilingual_user_name;?>"  class="form-control" />
+				<input type="text" name="tk_display_name" id="tk_display_name" value="" placeholder="<?php echo $multilingual_user_tip_name;?>"  class="form-control" />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_name; ?></span>
               </div>
 
-
-
-
-			  <div class="form-group col-xs-12">
+				<div class="form-group col-xs-12">
+                <label for="tk_user_team">所在部门 <span class="red" id="user_team" > * </span></label>
+                <div>
+				<select name="tk_user_team"  id="tk_user_team" class="form-control">
+	    <option value="" >请选择</option>
+	    <?php 
+	    $query_Recordset1 = "SELECT * FROM tk_team order by tk_team_order";
+	    $r = mysql_query ( $query_Recordset1, $tankdb ) or die ( mysql_error () );
+	    while ($a = mysql_fetch_assoc($r)){ ?>
+	    ?>
+        <option value="<?php echo $a["id"]?>"><?php echo $a["tk_team_name"]; ?></option>
+        <?php }?>
+      </select>
+                </div>
+              </div>
+              
+              <div class="form-group col-xs-12">
+                <label for="tk_user_role">职务 <span class="red" id="user_role" >*</span></label>
+                <div>
+				<select name="tk_user_role"  id="tk_user_role" class="form-control">
+	    <option value="" >请选择</option>
+	    <?php 
+	    $query_Recordset1 = "SELECT * FROM tk_user_role order by tk_role_order";
+	    $r = mysql_query ( $query_Recordset1, $tankdb ) or die ( mysql_error () );
+	    while ($a = mysql_fetch_assoc($r)){ ?>
+	    ?>
+        <option value="<?php echo $a["id"]?>"><?php echo $a["tk_role_name"]; ?></option>
+        <?php }?>
+      </select>
+                </div>
+              </div>
+              
+ <div class="form-group col-xs-12">
                 <label for="tk_user_contact"><?php echo $multilingual_user_contact; ?></label>
                 <div>
-				<input type="text" name="tk_user_contact" id="tk_user_contact" value="" placeholder="<?php echo $multilingual_user_contact;?>"  class="form-control" />
+				<input type="text" name="tk_user_contact" id="tk_user_contact" value="" placeholder="<?php echo $multilingual_user_tip_contact;?>"  class="form-control" />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_contact; ?></span>
               </div>
-
-
-
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_user_email"><?php echo $multilingual_user_email; ?></label>
                 <div>
-				<input type="text" name="tk_user_email" id="tk_user_email" value="" placeholder="<?php echo $multilingual_user_email;?>"  class="form-control" />
+				<input type="text" name="tk_user_email" id="tk_user_email" value="" placeholder="<?php echo $multilingual_user_tip_mail;?>"  class="form-control" />
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_mail; ?></span>
               </div>
-
-
-
-
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_user_remark"><?php echo $multilingual_user_remark; ?></label>
                 <div>
-				<textarea name="tk_user_remark" id="tk_user_remark" class="form-control" rows="5" placeholder="<?php echo $multilingual_user_remark;?>"></textarea>
+				<textarea name="tk_user_remark" id="tk_user_remark" class="form-control" rows="2" placeholder="<?php echo $multilingual_user_remark;?>"></textarea>
                 </div>
-				<span class="help-block"><?php echo $multilingual_user_tip_remark; ?></span>
               </div>
-
-
 
 			  <div class="form-group col-xs-12">
                 <label for="tk_user_rank"><?php echo $multilingual_user_role; ?></label>

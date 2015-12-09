@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2015-12-08 16:30:32
+-- Generation Time: 2015-12-09 01:25:00
 -- 服务器版本： 10.0.17-MariaDB
 -- PHP Version: 5.6.14
 
@@ -2487,6 +2487,8 @@ CREATE TABLE `tk_user` (
   `tk_user_pass` varchar(64) NOT NULL DEFAULT '',
   `tk_user_token` varchar(60) NOT NULL DEFAULT '0',
   `tk_display_name` varchar(50) NOT NULL DEFAULT '',
+  `tk_team` int(11) NOT NULL,
+  `tk_user_role` int(11) NOT NULL,
   `pid` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `tk_user_status` varchar(60) NOT NULL DEFAULT '',
   `tk_user_registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -2497,19 +2499,19 @@ CREATE TABLE `tk_user` (
   `tk_user_message` bigint(20) NOT NULL DEFAULT '0',
   `tk_user_lastuse` text,
   `tk_user_backup1` varchar(60) NOT NULL,
-  `tk_pinyin` varchar(50) DEFAULT NULL,
-  `tk_team` int(11) NOT NULL,
-  `tk_user_role` int(11) NOT NULL
+  `tk_pinyin` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tk_user`
 --
 
-INSERT INTO `tk_user` (`uid`, `tk_user_login`, `tk_user_pass`, `tk_user_token`, `tk_display_name`, `pid`, `tk_user_status`, `tk_user_registered`, `tk_user_remark`, `tk_user_rank`, `tk_user_contact`, `tk_user_email`, `tk_user_message`, `tk_user_lastuse`, `tk_user_backup1`, `tk_pinyin`, `tk_team`, `tk_user_role`) VALUES
-(1, 'admin', 'a6ec5a7b854d204b74cd90a8306a957e', '0', 'Admin', 1, 'asdfasf', '2015-12-06 07:49:43', '', 5, '', '', 0, '{"0":{"uid":"46","uname":""},"2":{"uid":"46","uname":"\\u674e\\u56db"},"3":{"uid":"1","uname":"Admin"},"4":{"uid":"1","uname":""}}', '', NULL, 0, 0),
-(45, 'test1', '4e39d6aaa157a087af755cfa6e05062e', '0', '张三', 0, '', '2015-12-04 11:08:45', '', 4, '12345678', '', 0, NULL, '', NULL, 0, 0),
-(46, 'lisi', 'd6fde252a6b164a42958c1a8c7c674d6', '0', '李四', 0, '', '2015-12-07 00:14:06', '', 3, '', '', 661, '[{"uid":"1", "uname":"Admin" }]', '', NULL, 0, 0);
+INSERT INTO `tk_user` (`uid`, `tk_user_login`, `tk_user_pass`, `tk_user_token`, `tk_display_name`, `tk_team`, `tk_user_role`, `pid`, `tk_user_status`, `tk_user_registered`, `tk_user_remark`, `tk_user_rank`, `tk_user_contact`, `tk_user_email`, `tk_user_message`, `tk_user_lastuse`, `tk_user_backup1`, `tk_pinyin`) VALUES
+(1, 'admin', 'a6ec5a7b854d204b74cd90a8306a957e', '0', 'Admin', 0, 0, 1, 'asdfasf', '2015-12-08 23:54:17', '', 5, '', '', 676, '{"0":{"uid":"46","uname":""},"2":{"uid":"46","uname":"\\u674e\\u56db"},"3":{"uid":"1","uname":"Admin"},"4":{"uid":"1","uname":""}}', '', NULL),
+(45, 'test1', '4e39d6aaa157a087af755cfa6e05062e', '0', '张三', 0, 0, 0, '', '2015-12-04 11:08:45', '', 4, '12345678', '', 0, NULL, '', NULL),
+(46, 'lisi', 'd6fde252a6b164a42958c1a8c7c674d6', '0', '李四', 0, 0, 0, '', '2015-12-07 00:14:06', '', 3, '', '', 661, '[{"uid":"1", "uname":"Admin" }]', '', NULL),
+(47, 'banshiyuan', 'ff8b78934a1d53ac078657da6d0af2da', '0', '办事员', 8, 5, 0, '', '2015-12-08 22:44:49', 'sdfasdfasdf1', 3, '13321111111', 'sdfasdf@asdfasd.com1', 0, NULL, '', NULL),
+(48, 'yuanzhang', 'ff8b78934a1d53ac078657da6d0af2da', '0', '院长', 5, 1, 0, '', '2015-12-08 23:37:58', '', 2, '', '', 0, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -2528,11 +2530,12 @@ CREATE TABLE `tk_user_role` (
 --
 
 INSERT INTO `tk_user_role` (`id`, `tk_role_name`, `tk_role_order`) VALUES
-(1, '院长', 1),
-(2, '总工程师', 2),
-(3, '所长', 3),
-(4, '主任工程师', 4),
-(5, '办事员', 5);
+(1, '院长', 10),
+(2, '总工程师', 20),
+(3, '所长', 30),
+(4, '主任工程师', 40),
+(5, '办事员', 50),
+(6, '项目负责人', 40);
 
 --
 -- Indexes for dumped tables
@@ -2845,7 +2848,7 @@ ALTER TABLE `tk_team`
 -- AUTO_INCREMENT for table `tk_user`
 --
 ALTER TABLE `tk_user`
-  MODIFY `uid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `uid` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `tk_user_role`
 --

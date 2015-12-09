@@ -69,7 +69,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
 
 
-    mysql_select_db($database_tankdb, $tankdb);
+    
   $Result1 = mysql_query($updateSQL, $tankdb) or die(mysql_error());
 
   $updateGoTo = "project_view.php?recordID=$colname_Recordset1";
@@ -81,7 +81,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 }
 
 //从数据库里读取项目基本信息，为填充下拉列表做准备
-mysql_select_db($database_tankdb, $tankdb);
+
 $query_Recordset1 = sprintf("SELECT * FROM tk_project
                             INNER JOIN tk_project_type on tk_project.project_type=tk_project_type.ptid
                             WHERE id = %s", GetSQLValueString($colname_Recordset1, "int"));
@@ -90,25 +90,23 @@ $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 
 //从数据库里读取项目状态列表信息，为填充下拉列表做准备
-mysql_select_db($database_tankdb, $tankdb);
+
 $query_Recordset_status = "SELECT * FROM tk_status_project ORDER BY task_status_pbackup1 ASC";
 $Recordset_status = mysql_query($query_Recordset_status, $tankdb) or die(mysql_error());
-$row_Recordset_status = mysql_fetch_assoc($query_Recordset_status);
-$totalRows_Recordset_status = mysql_num_rows($query_Recordset_status);
+$row_Recordset_status = mysql_fetch_assoc($Recordset_status);
 
 /*//从数据库里读取项目类型列表信息，为填充下拉列表做准备
-mysql_select_db($database_tankdb, $tankdb);
+
 $query_Recordset3 = "SELECT * FROM tk_project_type ORDER BY project_type_backup1 ASC";
 $Recordset3 = mysql_query($query_Recordset3, $tankdb) or die(mysql_error());
 $row_Recordset3 = mysql_fetch_assoc($Recordset3);
 $totalRows_Recordset3 = mysql_num_rows($Recordset3);*/
 
 //获取tk_project_type数据库设定好的值
-mysql_select_db($database_tankdb, $tankdb);
+
 $query_RS_projet_type = "SELECT * FROM tk_project_type ORDER BY project_type_backup1 ASC";
 $Recordset_project_type = mysql_query($query_RS_projet_type, $tankdb) or die(mysql_error());
 $row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type);
-$totalRows_Recordset_project_type = mysql_num_rows($Recordset_project_type);
 
 
 $user_arr = get_user_select();
@@ -398,7 +396,11 @@ $('#project_member').multiselect('select', ['1'],true);*/
                                   <div >
                                      <select id="project_type" name="project_type"  onChange="option_gourl(this.value)"  class="form-control">
                                           <?php do { ?>
-                                        <option value="<?php echo $row_Recordset_project_type['ptid']?>" <?php if (!(strcmp($row_Recordset_type['ptid'], ($row_Recordset1['project_type'])))) {echo "selected=\"selected\"";} ?>><?php echo $row_Recordset_project_type['project_type_name']?></option>
+                                        <option value="<?php echo $row_Recordset_project_type['ptid']?>"
+                                        <?php 
+                                        if ($row_Recordset_project_type['ptid']==$row_Recordset1['project_type']) {echo "selected=\"selected\"";} 
+                                        ?>
+                                         ><?php echo $row_Recordset_project_type['project_type_name']?></option>
                                         <?php
                                     } while ($row_Recordset_project_type = mysql_fetch_assoc($Recordset_project_type));
                                     $rows = mysql_num_rows($Recordset_project_type);
@@ -540,7 +542,7 @@ $('#project_member').multiselect('select', ['1'],true);*/
                               <label for="project_dean" >项目主管院长<span id="project_dean_msg" ></span></label>
                                  <div>
                                     <select name="project_dean" id="project_dean" multiple="multiple"  >  //class="form-control">
-	                                    <?php foreach($user_arr as $key => $val){ ?>
+	                                    <?php foreach(get_user_select(10) as $key => $val){ ?>
                                         <option value='<?php echo $val["uid"]?>' <?php if (in_array($val["uid"], explode(',',$row_Recordset1['project_dean']))) {echo "selected=\"selected\"";} ?>><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                     <?php } ?>
 	                                 </select>
@@ -554,7 +556,7 @@ $('#project_member').multiselect('select', ['1'],true);*/
                               <label for="project_chief_engineer" >项目主管总工<span id="project_chief_engineer_msg" ></span></label>
                                  <div>
                                     <select name="project_chief_engineer" id="project_chief_engineer"  multiple="multiple">
-	                                        <?php foreach($user_arr as $key => $val){ ?>
+	                                        <?php foreach(get_user_select(20) as $key => $val){ ?>
                                         <option value='<?php echo $val["uid"]?>' <?php if (in_array($val["uid"], explode(',',$row_Recordset1['project_chief_engineer']))) {echo "selected=\"selected\"";} ?>><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                     <?php } ?>
 	                                  </select>
@@ -568,7 +570,7 @@ $('#project_member').multiselect('select', ['1'],true);*/
                               <label for="project_Director" >项目主管所长<span id="project_Director_msg" ></span></label>
                                  <div>
                                     <select name="project_Director" id="project_Director"  multiple="multiple">  //class="form-control">
-	                                    <?php foreach($user_arr as $key => $val){ ?>
+	                                    <?php foreach(get_user_select(30) as $key => $val){ ?>
                                             <option value='<?php echo $val["uid"]?>' <?php if (in_array($val["uid"], explode(',',$row_Recordset1['project_Director']))) {echo "selected=\"selected\"";} ?>><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                         <?php } ?>
 	                                  </select>
@@ -582,7 +584,7 @@ $('#project_member').multiselect('select', ['1'],true);*/
                               <label for="project_Division_engineer" >项目主管主任工程师<span id="project_Division_engineer_msg"  ></span></label>
                                  <div>
                                     <select name="project_Division_engineer"  id="project_Division_engineer"  multiple="multiple">  //class="form-control">
-	                                        <?php foreach($user_arr as $key => $val){ ?>
+	                                        <?php foreach(get_user_select(40) as $key => $val){ ?>
                                             <option value='<?php echo $val["uid"]?>' <?php if (in_array($val["uid"], explode(',',$row_Recordset1['project_Division_engineer']))) {echo "selected=\"selected\"";} ?>><?php $py = strtoupper(substr($val["pinyin"], 0, 1));echo $py."-".$val["name"]?></option>
                                         <?php } ?>
 	                                  </select>
@@ -643,10 +645,3 @@ $('#project_member').multiselect('select', ['1'],true);*/
 <?php require('foot.php'); ?>
 </body>
 </html>
-<?php
-mysql_free_result($Result1);
-mysql_free_result($Recordset1);
-mysql_free_result($Recordset_status);
-mysql_free_result($Recordset3);
-mysql_free_result($Recordset_project_type);
-?>

@@ -66,8 +66,8 @@ window.onload = function()
 }
 //-->
 </script>
-<script type="text/javascript" src="srcipt/jquery.js"></script>
-<script type="text/javascript" src="srcipt/js.js"></script>
+<script type="text/javascript" src="../srcipt/jquery.js"></script>
+<script type="text/javascript" src="../srcipt/js.js"></script>
 </head>
 
 <body>
@@ -80,7 +80,7 @@ window.onload = function()
 					name="form1" id="form1">
 					<table class="filter_table" border="0" cellspacing="0"
 						cellpadding="0">
-						<thead>
+						<thead class="toptable">
 							<tr>
 								<th colspan="2">部门管理</th>
 							</tr>

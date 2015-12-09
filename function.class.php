@@ -1183,11 +1183,15 @@ return $tktype_arr;
 
 
 //get user
-function get_user_select() {
+function get_user_select($user_role_order=0) {
 global $tankdb;
-global $database_tankdb;
   
-$query_user ="SELECT * FROM tk_user WHERE tk_user_rank <> '0' ORDER BY CONVERT(tk_display_name USING gbk )";
+$query_user ="SELECT * FROM tk_user WHERE 1";
+if($user_role_order!=0){
+	$query_user = "SELECT * FROM tk_user 
+		inner join tk_user_role on tk_user.tk_user_role=tk_user_role.id where tk_user_role.tk_role_order='$user_role_order'";
+}
+$query_user .=" and tk_user.tk_user_rank <> '0' ORDER BY CONVERT(tk_user.tk_display_name USING gbk )";
 $userRS = mysql_query($query_user, $tankdb) or die(mysql_error());
 $row_user = mysql_fetch_assoc($userRS);
  

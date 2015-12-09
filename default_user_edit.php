@@ -74,7 +74,9 @@ if ((isset ( $_POST ["MM_update"] )) && ($_POST ["MM_update"] == "form1")) {
 <script type="text/javascript" src="srcipt/lhgcheck.js"></script>
 <script type="text/javascript">
 J.check.rules = [
-	{ name: 'tk_display_name', mid: 'display_name', type: 'limit', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>' }
+	{ name: 'tk_display_name', mid: 'display_name', type: 'limit', requir: true, min: 2, max: 12, warn: '<?php echo $multilingual_user_namequired; ?>' },
+	{ name: 'tk_user_team', mid: 'user_team', type: 'limit', requir: true, min: 1, max: 11, warn: '请选择用户部门' },
+	{ name: 'tk_user_role', mid: 'user_role', type: 'limit', requir: true, min: 1, max: 11, warn: '请选择用户职务' }
 	
 ];
 
@@ -143,7 +145,49 @@ window.onload = function()
 								<span class="help-block"><?php echo $multilingual_user_tip_name; ?></span>
 							</div>
 
-
+<div class="form-group col-xs-12">
+                <label for="tk_user_team">所在部门 <span class="red" id="user_team" > * </span></label>
+                <div>
+				<select name="tk_user_team"  id="tk_user_team" class="form-control">
+	    <option value="" >请选择</option>
+	    <?php 
+	    $query_Recordset1 = "SELECT * FROM tk_team order by tk_team_order";
+	    $r = mysql_query ( $query_Recordset1, $tankdb ) or die ( mysql_error () );
+	    while ($a = mysql_fetch_assoc($r)){ ?>
+	    ?>
+        <option value="<?php echo $a["id"]?>"
+        <?php 
+        if($row_Recordset1['tk_team']==$a["id"]){
+        	echo 'selected="selected"';
+		}
+        ?>
+        ><?php echo $a["tk_team_name"]; ?></option>
+        <?php }?>
+      </select>
+                </div>
+              </div>
+              
+              <div class="form-group col-xs-12">
+                <label for="tk_user_role">职务 <span class="red" id="user_role" >*</span></label>
+                <div>
+				<select name="tk_user_role"  id="tk_user_role" class="form-control">
+	    <option value="" >请选择</option>
+	    <?php 
+	    $query_Recordset1 = "SELECT * FROM tk_user_role order by tk_role_order";
+	    $r = mysql_query ( $query_Recordset1, $tankdb ) or die ( mysql_error () );
+	    while ($a = mysql_fetch_assoc($r)){ ?>
+	    ?>
+        <option value="<?php echo $a["id"]?>"
+        <?php 
+        if($row_Recordset1['tk_user_role']==$a["id"]){
+        	echo 'selected="selected"';
+		}
+        ?>
+        ><?php echo $a["tk_role_name"]; ?></option>
+        <?php }?>
+      </select>
+                </div>
+              </div>
 
 
 							<div class="form-group col-xs-12">
@@ -341,5 +385,5 @@ window.onload = function()
 <?php require('foot.php'); ?>
 </body>
 </html><?php
-mysql_free_result($Recordset1);
+mysql_free_result ( $Recordset1 );
 ?>

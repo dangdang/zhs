@@ -65,8 +65,8 @@ window.onload = function()
 }
 //-->
 </script>
-<script type="text/javascript" src="srcipt/jquery.js"></script>
-<script type="text/javascript" src="srcipt/js.js"></script>
+<script type="text/javascript" src="../srcipt/jquery.js"></script>
+<script type="text/javascript" src="../srcipt/js.js"></script>
 </head>
 
 <body>
@@ -79,18 +79,18 @@ window.onload = function()
 					name="form1" id="form1">
 					<table class="filter_table" border="0" cellspacing="0"
 						cellpadding="0">
-						<thead>
+						<thead class="toptable">
 							<tr>
 								<th colspan="2">用户职务管理</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>部门名称:<br /> <input type="text" name="role_name"
+								<td>职务名称:<br /> <input type="text" name="role_name"
 									id="role_name"
 									value="<?php if (isset ( $_GET ['editID'] )) { echo $au["tk_role_name"];}?>"
 									size="32" class="width-p80" /><span id="role_name_msg"></span></td>
-								<td><?php echo $multilingual_default_order; ?>:<br /> <input
+								<td>职务级别代码（请勿随意修改）:<br /> <input
 									type="text" name="role_order" id="role_order"
 									value="<?php if (isset ( $_GET ['editID'] )) { echo $au["tk_role_order"];}?>"
 									size="32" /><span id="role_order_msg"></td>
