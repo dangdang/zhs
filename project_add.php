@@ -75,10 +75,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     $newID = mysql_insert_id();
     
     //Generate approval request
+    //to 项目主管
     $q="INSERT INTO `tk_approval` (`type`, `subject`, `create_date`, `project_id`, `sender`, `receiver`, `update_date`) 
     		VALUES ('1', '关于新建[".$_POST['project_name']."]项目的审批请示', now(), $newID, '".$_SESSION['MM_uid']."',
     		'".$_POST['selected_project_Division_engineer']."', now());";
     mysql_query($q);
+    //to 所长
+    $q="INSERT INTO `tk_approval` (`type`, `subject`, `create_date`, `project_id`, `sender`, `receiver`, `update_date`)
+    		VALUES ('1', '关于新建[".$_POST['project_name']."]项目的审批请示', now(), $newID, '".$_SESSION['MM_uid']."',
+    		'".$_POST['selected_project_Director']."', now());";
+    mysql_query($q);
+    
     $insertGoTo = "project_view.php?recordID=$newID";
     if (isset($_SERVER['QUERY_STRING'])) {
         $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";

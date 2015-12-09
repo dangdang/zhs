@@ -2,6 +2,22 @@
  <?php require_once('../function.class.php'); ?>
  <?php require_once("../multilingual/language_cn.php"); ?>
  <?php require_once('../session.php'); ?>
+ <script type="text/javascript" src="../srcipt/lhgcore.js"></script>
+<script type="text/javascript" src="../srcipt/lhgdialog.js"></script>
+<script type="text/javascript">
+<!--
+
+function callModalWindow(id,title,page)
+{
+	//J.dialog.get({ id: 'test1', title: '测试窗口', page: 'jdialog.html' });
+	//J.dialog.get({ id: 'test1', title: '测试窗口', page: 'content.html' });
+	J.dialog.get({ id: 'test3', title: '测试窗口', width: 500, page: '../approval.php' });
+    
+}
+//-->
+</script>
+<a onClick='callModalWindow("approve"," 审批","test.php")' class="mouse_over" href="#"> 审批</a>
+ 
  
 <?php 
 $str="default_task_edit.php?editID=222&pagetab=mtask";
@@ -57,7 +73,7 @@ function checkform(){
 
 	
 }
-checkform();
+
 </script>
 <style type="text/css">
 option {
@@ -72,6 +88,8 @@ option {
 }
 </style>
 
+
+<hr>
 <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post"
 	name="form1" id="form1" onsubmit='if($("#csa_tb_backup3").val()==0){$("#project_id").css("color","red");;return false;}'>
     

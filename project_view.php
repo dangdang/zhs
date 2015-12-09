@@ -328,6 +328,19 @@ function addcomm()
     J.dialog.get({ id: "test1", title: '<?php echo $multilingual_default_addcom; ?>', width: 600, height: 500, page: "comment_add.php?taskid=<?php echo $row_DetailRS1['id']; ?>&projectid=1&type=2" });
 }
 
+function callModalWindow(id,title,page,cover)
+{
+    J.dialog.get({ 
+        id: id,
+        title: title, 
+        width: 600,
+        height: 500,
+        page: page,
+        cover:cover
+     });
+    
+}
+
 function   searchtask() 
       {document.form1.action= "project_view.php?#task "; 
         document.form1.submit(); 
@@ -1194,6 +1207,7 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
 {
     J.dialog.get({ id: 'test', title: '<?php echo $multilingual_default_task_section5; ?>', page: 'log_view.php?date=<?php echo $row_Recordset_log['csa_tb_year']; ?>&taskid=<?php echo $row_Recordset_log['csa_tb_backup1']; ?>' });
 }
+
 </script>
   <a class="mouse_hover" onClick="addcomment<?php echo $row_Recordset_log['tbid']; ?>()"><?php echo $multilingual_log_comment; ?><?php 
   if ($row_Recordset_log['csa_tb_comment'] > 0) {
@@ -1244,7 +1258,22 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
 </div>
 <!-- log end-->
 <!-- approve start -->	
-<div class="tab_b" id="tab_a4" style='display:none'>
+<div class="tab_b" id="tab_a4" 
+<?php 
+$q="select count(*) from tk_project
+		inner join tk_approval on tk_project.id=tk_approval.project_id
+		where tk_project.id=".$_GET["recordID"]." and tk_approval.type=1 and tk_approval.state=1";
+$r=mysql_query($q);
+$a=mysql_fetch_row($r);
+if($a[0]<2){
+?>
+style='display:block'
+<?php
+}else{ 
+?>
+style='display:none'
+<?php }?>
+>
 
   <table><tr></tr><tr></tr></table>
   <table width="100%">
@@ -1268,7 +1297,7 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
         </thead>
         <tbody>
         <?php 
-        $r=mysql_query("select * from tk_approval");
+        $r=mysql_query("select * from tk_approval where project_id=".$_GET["recordID"]);
         while($a=mysql_fetch_assoc($r)){
         ?>
           <tr>
@@ -1282,7 +1311,7 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
             <?php 
             if($a['state']==0){
             	?>
-            	<a onClick="addcomm();" class="mouse_over"><span class="glyphicon glyphicon-check"></span> 审批</a>
+            	<a onClick='callModalWindow("approve","<?php echo $a_approval_type[$a['type']]; ?> 审批","api/approval.php?approval_id=<?php echo $a["id"];?>",true);' class="mouse_over"><span class="glyphicon glyphicon-check"></span> 审批</a>
             	<?php
             }
             ?>

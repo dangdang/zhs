@@ -5,7 +5,6 @@ if (!isset($_SESSION)) {
   session_start();
 }
 
-$loginFormAction = $_SERVER['PHP_SELF'];
 if (isset($_GET['accesscheck'])) {
   $_SESSION['PrevUrl'] = $_GET['accesscheck'];
 }//重定向到user_login.php，并传递了参数 accesscheck=index.php
@@ -100,7 +99,7 @@ if (isset($_POST['textfield'])) {
       </td>
 	  
 	  <td >
-      <form id="form1" name="form1" method="POST" action="<?php echo $loginFormAction; ?>">
+      <form id="form1" name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	  
 	   <div class="form-group">
     <label for="textfield"><?php echo $multilingual_userlogin_username; ?></label>

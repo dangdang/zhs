@@ -78,6 +78,7 @@ dialog : (function()
 				'</html>'
 			].join(''));
 			doc.close();
+			
 		},
 		
 		close : function(d,c)
