@@ -1261,6 +1261,7 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
           <th>申请时间</th>
           <th>接收人</th>
           <th>状态</th>
+          <th>审批意见</th>
           <th>更新时间</th>
           
         </tr>
@@ -1277,6 +1278,16 @@ function addcomment<?php echo $row_Recordset_log['tbid']; ?>()
             <td><?php echo $a['create_date']; ?></td>
             <td><?php echo get_user($a['receiver'],"tk_display_name"); ?></td>
             <td><?php echo $a_approval_state[$a['state']]; ?></td>
+            <td>
+            <?php 
+            if($a['state']==0){
+            	?>
+            	<a onClick="addcomm();" class="mouse_over"><span class="glyphicon glyphicon-check"></span> 审批</a>
+            	<?php
+            }
+            ?>
+            <?php echo $a['comment']; ?>
+            </td>
             <td><?php echo $a['update_date']; ?></td>
             </tr>
 		<?php }?>
